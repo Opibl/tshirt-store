@@ -65,8 +65,8 @@ server.post('/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'], // Métodos de pago aceptados
       line_items: line_items, // Productos mapeados
       mode: 'payment', // Modo de pago
-      success_url: 'https://tshirt-storeop.netlify.app/success', // URL de éxito
-      cancel_url: 'https://tshirt-storeop.netlify.app/cancel',  // URL de cancelación
+      success_url: 'http://localhost:4200/success', // URL de éxito
+      cancel_url: 'http://localhost:4200//cancel',  // URL de cancelación
     });
 
     // Envía la sesión creada como respuesta
