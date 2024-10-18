@@ -9,7 +9,7 @@ import { throwError } from 'rxjs';
 })
 export class ServicoService {
 
-  servidor = "http://localhost:3000/";
+  servidor = "https://back-store-8f9mwpx20-opibls-projects.vercel.app";
 
   constructor(private servicio:HttpClient) { }
 
