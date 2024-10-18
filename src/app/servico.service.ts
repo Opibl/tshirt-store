@@ -4,12 +4,13 @@ import {Observable} from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class ServicoService {
 
-  servidor = "https://back-store-ovl9tntse-opibls-projects.vercel.app/";
+  servidor = "https://back-store-mu.vercel.app/";
 
   constructor(private servicio:HttpClient) { }
 
