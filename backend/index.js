@@ -21,13 +21,21 @@ const firebaseConfig = {
 
 
 
+
+
+
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const server = express();
-server.use(cors());
-server.use(express.json());
+
+const corsOptions = {
+  origin: 'https://tshirt-storeop.netlify.app', // Cambia esto por la URL de tu app en producción
+  optionsSuccessStatus: 200
+};
+
+server.use(cors(corsOptions));
 
 // Ruta para obtener cursos
 server.get('/productos', async (req, res) => {
@@ -65,8 +73,8 @@ server.post('/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'], // Métodos de pago aceptados
       line_items: line_items, // Productos mapeados
       mode: 'payment', // Modo de pago
-      success_url: 'http://localhost:4200/success', // URL de éxito
-      cancel_url: 'http://localhost:4200//cancel',  // URL de cancelación
+      success_url: 'https://tshirt-storeop.netlify.app//success', // URL de éxito
+      cancel_url: 'https://tshirt-storeop.netlify.app//cancel',  // URL de cancelación
     });
 
     // Envía la sesión creada como respuesta
