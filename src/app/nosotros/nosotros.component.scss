@@ -1,0 +1,103 @@
+$primario: #9C27B0;
+$primarioOscuro: #89119D;
+$secundario: #FFCE00;
+$secundarioOscuro: rgb(233, 187, 2);
+$blanco: #FFF;
+$negro: #000;
+$fuentePrincipal: 'Staatliches', cursive;
+
+
+
+/** Globales **/
+.body {
+    background-color: $primario;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    padding-bottom: 2rem;
+}
+
+.header__contenido {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: $primario;
+}
+
+.header__logo {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 60px;
+}
+
+.navegacion {
+    font-family: $fuentePrincipal;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    gap: 20px;
+    background-color: $primarioOscuro;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 4rem;
+}
+
+.navegacion__enlace {
+    text-decoration: none;
+    color: #fff2f2;
+    padding: 10px;
+    font-size: 2rem;
+}
+
+
+
+.navegacion__enlace--activo,
+.navegacion__enlace:hover {
+    color: $secundario;
+}
+
+
+.cuerpo {
+    background-color: $primarioOscuro;
+    width: 80rem;
+    height: 40rem;
+    color: $blanco;
+    padding: 2rem 2rem;
+    /* Propiedades para centrar el cuerpo */
+    margin: 0 auto; /* Centra horizontalmente */
+    display: flex; /* Utiliza flexbox para centrar contenido */
+    flex-direction: column; /* Organiza en columna */
+    text-align: center; /* Alinea el texto al centro */
+    
+}
+
+
+
+
+
+
+
+/* Para dispositivos pequeños (teléfonos móviles) */
+@media (max-width: 599px) {
+    .cuerpo{
+        width: 20rem;
+        height: 60rem;
+        font-size: 1rem;
+    }
+}
+
+
+/* Para dispositivos medianos (tabletas) */
+@media (min-width: 600px) and (max-width: 1398px) {
+    .cuerpo{
+        width: 30rem;
+        font-size: 1rem;
+    }
+}
+
+@media (min-height: 1280px) {
+    .cuerpo{
+        height: 950px;
+    }
+}
+

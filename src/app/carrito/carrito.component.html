@@ -1,0 +1,40 @@
+<div class="body">
+    <header class="header">
+        <div class="header__contenido">
+            <a href="">
+                <img class="header__logo" src="/assets/img/logo.png" alt="Logotipo">
+            </a>
+
+            <nav class="navegacion">
+                <a class="navegacion__enlace navegacion__enlace--activo" href="">Tienda</a>
+                <a class="navegacion__enlace" href="/nosotros">Nosotros</a>
+                <a class="navegacion__enlace" href="/carrito">carrito</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="cuerpo">
+        <div *ngIf="productos && productos.length > 0; else noProductos">
+            <h3>Carrito de compras</h3>
+            <ul>
+            <li *ngFor="let prod of productos; let i = index"> <!-- Agrega el índice -->
+                <p>Nombre: {{ prod.nombre }}</p>
+                <p>Precio: {{ prod.precio | currency:'CLP' }}</p>
+                <img src="/assets/img/{{prod.id}}.jpg" alt="imagen" class="img-producto">
+                <button (click)="eliminarDelCarrito(i)">Eliminar</button> <!-- Pasa el índice -->
+            </li>
+            </ul>
+        </div>
+
+        <ng-template #noProductos>
+            <p>No hay productos en el carrito</p>
+        </ng-template>
+
+        <div class="contenedor-botones">
+            <button class="boton agregar-carrito" (click)="terminarCompra()">Terminar compra</button>
+        </div>
+    </div>    
+</div>
+
+
+

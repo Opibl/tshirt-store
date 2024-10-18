@@ -1,0 +1,33 @@
+<section class="body">
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+    <header class="header">
+        <div class="header__contenido">
+            <a href="">
+                <img class="header__logo" src="/assets/img/logo.png" alt="Logotipo">
+            </a>
+
+            <nav class="navegacion">
+                <a class="navegacion__enlace navegacion__enlace--activo" href="">Tienda</a>
+                <a class="navegacion__enlace" href="/nosotros">Nosotros</a>
+                <a class="navegacion__enlace" href="/carrito">carrito</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="cuerpo"> 
+        <div class="imagen">
+            <img src="/assets/img/{{id}}.jpg" alt="imagen">
+            <div class="precio">{{precio}} clp</div>
+        </div>
+
+        <div class="descripcion">
+            <p>{{ descripcion }}</p>
+        </div>
+        <div class="contenedor-botones">
+            <button class="boton agregar-carrito" (click) = "addToCart(nombre,precio)">Agregar a carrito</button>
+            <button class="boton comprar-ahora" (click) = "comprarAhora()">Comprar Ahora</button>
+        </div>
+    </div>
+
+    
+</section>

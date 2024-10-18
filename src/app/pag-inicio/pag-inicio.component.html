@@ -1,0 +1,33 @@
+<div class="body">
+    <header class="header">
+        <a href="">
+            <img class="header__logo" src="/assets/img/logo.png" alt="Logotipo">
+        </a>
+    </header>
+
+    <nav class="navegacion">
+        <a class="navegacion__enlace navegacion__enlace--activo" href="">Tienda</a>
+        <a class="navegacion__enlace" routerLink="/nosotros">Nosotros</a>
+        <a class="navegacion__enlace" href="/carrito">Carrito</a>
+    </nav>
+
+    <main class="contenedor">
+        <h1>Nuestros Productos</h1>
+
+        <div class="grid">
+            <!-- Usamos *ngFor para iterar sobre los productos -->
+            <div class="producto" *ngFor="let producto of productos">
+                <a [routerLink]="['/descripcion', producto.id]">
+                    <img class="producto__imagen" src="/assets/img/{{producto.id}}.jpg" [alt]="'imagen ' + producto.nombre">
+                    <div class="producto__informacion">
+                        <p class="producto__nombre">{{ producto.nombre }}</p>
+                        <p class="producto__precio">{{ producto.precio | currency:'CLP' }}</p>
+                    </div>
+                </a>
+            </div> <!-- .producto -->
+
+            <div class="grafico grafico--camisas"></div>
+            <div class="grafico grafico--node"></div>
+        </div>
+    </main>    
+</div>

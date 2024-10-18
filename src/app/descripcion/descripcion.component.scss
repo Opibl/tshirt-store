@@ -1,0 +1,278 @@
+$primario: #9C27B0;
+$primarioOscuro: #89119D;
+$secundario: #FFCE00;
+$secundarioOscuro: rgb(233, 187, 2);
+$blanco: #FFF;
+$negro: #000;
+$fuentePrincipal: 'Staatliches', cursive;
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%; /* 1rem = 10px */
+    background-color: $primario;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/** Globales **/
+.body {
+    background-color: $primario;
+    font-size: 1.6rem;
+    line-height: 1.5;
+}
+
+
+
+.header__contenido {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: $primario;
+}
+
+.header__logo {
+    padding-top: 20px;
+    height: 60px;
+}
+
+.navegacion {
+    font-family: $fuentePrincipal;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    gap: 20px;
+    background-color: $primarioOscuro;
+    width: 100%;
+    justify-content: center;
+}
+
+.navegacion__enlace {
+    text-decoration: none;
+    color: #fff2f2;
+    padding: 10px;
+}
+
+
+
+.navegacion__enlace--activo,
+.navegacion__enlace:hover {
+    color: $secundario;
+}
+
+.cuerpo {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+}
+
+.descripcion {
+    background-color: $primarioOscuro;
+    grid-column: 4 / 10;
+    grid-row: 1 / 4;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    padding: 1rem;
+}
+
+.descripcion p {
+    color: $blanco /* Cambia el color a un valor hexadecimal (naranja) */
+}
+
+.precio{
+    text-transform: uppercase;
+    color: $blanco;
+    background-color: $primarioOscuro;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;     /* Centra verticalmente */
+}
+
+.imagen {
+    grid-column: 1 / 4;
+    grid-row: 1 / 4;
+    padding: 2rem;
+}
+
+
+.boton {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: $primarioOscuro;   /* Usar color secundario definido */
+    height: 2rem;
+    width: 12rem;
+    color: $blanco;                   /* Texto en negro para contraste */
+    border: none;                    /* Sin bordes */
+    padding: 1rem 2rem;              /* Espaciado interno del botón */
+    font-size: 1rem;               /* Tamaño de fuente */
+    cursor: pointer;                 /* Cambiar el cursor a mano al pasar */
+    transition: background-color 0.3s ease; /* Transición suave al pasar el mouse */
+}
+.contenedor-botones{
+    grid-column: 5 / 12 ;
+}
+/* Efecto hover (cuando el mouse está sobre el botón) */
+.boton:hover {
+    background-color: $secundarioOscuro; /* Cambiar el color cuando se pasa el mouse */
+    color: $blanco;                      /* Texto en blanco para mejor contraste */
+}
+
+/** Footer **/
+.footer {
+    background-color: $primarioOscuro;
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+.footer__texto {
+    color: $blanco;
+    font-family: $fuentePrincipal;
+    text-align: center;
+    font-size: 1.2rem;
+}
+/* Ajustes Responsive */
+@media (max-width: 599px) {
+    
+    .navegacion {
+        position: absolute; /* Cambiar a relative para evitar solapamientos */
+        top: 80px;
+        left: 0;
+        right: 0;
+        height: 50px;
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem; /* Ajuste del tamaño de fuente */
+    }
+
+    .cuerpo {
+        position: relative; /* Cambiar a relative */
+        top: 70px;
+        padding: 20px;
+        display: block; 
+        height: 100rem;
+    }
+
+    .precio{
+        width: 15.4rem;
+    }
+
+    .imagen {
+        position: absolute;
+        top: 0;
+        margin-top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .imagen img {
+        width: 240px; /* Reduce el tamaño de la imagen */
+    }
+
+    .descripcion {
+        position: absolute;
+        top: 20rem;
+        left: 52%;
+        transform: translateX(-50%);
+        width: 280px; /* Reduce el ancho */
+        padding: 15px;
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+
+    .contenedor-botones {
+        position: absolute;
+        top: 80rem; /* Reducir la distancia entre el contenido */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 280px;
+        text-align: center;
+    }
+
+    .footer {
+        position: relative;
+        top: 100px; /* Reduce el margen superior */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 280px; /* Ajustar ancho del footer */
+        text-align: center;
+    }
+}
+
+
+@media (min-width: 600px) and (max-width: 1398px) {
+    
+    .navegacion {
+        position: absolute; /* Cambiar a relative para evitar solapamientos */
+        top: 80px;
+        left: 0;
+        right: 0;
+        height: 50px;
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem; /* Ajuste del tamaño de fuente */
+    }
+
+    .cuerpo {
+        position: relative; /* Cambiar a relative */
+        top: 70px;
+        padding: 20px;
+        display: block; 
+        height: 100rem;
+    }
+
+    .precio{
+        width: 15.4rem;
+    }
+
+    .imagen {
+        position: absolute;
+        top: 0;
+        margin-top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .imagen img {
+        width: 240px; /* Reduce el tamaño de la imagen */
+    }
+
+    .descripcion {
+        position: absolute;
+        top: 20rem;
+        left: 52%;
+        transform: translateX(-50%);
+        width: 280px; /* Reduce el ancho */
+        padding: 15px;
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+
+    .contenedor-botones {
+        position: absolute;
+        top: 80rem; /* Reducir la distancia entre el contenido */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 280px;
+        text-align: center;
+    }
+
+    .footer {
+        position: relative;
+        top: 100px; /* Reduce el margen superior */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 280px; /* Ajustar ancho del footer */
+        text-align: center;
+    }
+}

@@ -1,0 +1,163 @@
+$primario: #9C27B0;
+$primarioOscuro: #89119D;
+$secundario: #FFCE00;
+$secundarioOscuro: rgb(233, 187, 2);
+$blanco: #FFF;
+$negro: #000;
+$fuentePrincipal: 'Staatliches', cursive;
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%; /* 1rem = 10px */
+    background-color: $primario;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+/* Estilo del contenedor .cuerpo */
+.cuerpo {
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: $primario; /* Fondo blanco para el área de contenido */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.boton {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: $primarioOscuro;   /* Usar color secundario definido */
+    height: 4rem;
+    width: 12rem;
+    color: $blanco;                   /* Texto en negro para contraste */
+    border: none;                    /* Sin bordes */
+    padding: 1rem 2rem;              /* Espaciado interno del botón */
+    font-size: 1rem;               /* Tamaño de fuente */
+    cursor: pointer;                 /* Cambiar el cursor a mano al pasar */
+    transition: background-color 0.3s ease; /* Transición suave al pasar el mouse */
+}
+
+.contenedor-botones{
+    grid-column: 5 / 12 ;
+}
+/* Efecto hover (cuando el mouse está sobre el botón) */
+.boton:hover {
+    background-color: $secundarioOscuro; /* Cambiar el color cuando se pasa el mouse */
+    color: $blanco;                      /* Texto en blanco para mejor contraste */
+}
+
+.header__contenido {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: $primario;
+}
+
+.header__logo {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 60px;
+}
+
+.navegacion {
+    font-family: $fuentePrincipal;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    gap: 20px;
+    background-color: $primarioOscuro;
+    width: 100%;
+    justify-content: center;
+}
+
+.navegacion__enlace {
+    text-decoration: none;
+    color: #fff2f2;
+    padding: 10px;
+    font-size: 2rem;
+}
+
+
+
+.navegacion__enlace--activo,
+.navegacion__enlace:hover {
+    color: $secundario;
+}
+
+
+
+.footer {
+    background-color: $primarioOscuro;
+    padding: 1rem 0;
+    
+}
+.footer__texto {
+    color: $blanco;
+    font-family: $fuentePrincipal;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+
+
+.cuerpo h3 {
+    margin-bottom: 20px;
+    margin-left: 100px;
+    font-size: 24px;
+    color: $blanco;
+    text-transform: uppercase;
+}
+
+/* Estilo de la lista de productos */
+.cuerpo ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 600px; /* Tamaño máximo de la lista */
+    text-transform: uppercase;
+}
+
+.cuerpo li {
+    background-color: #fafafa;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px; /* Bordes redondeados */
+    border: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.img-producto {
+    width: 50px;
+    height: 50px;
+    object-fit: cover; /* Para que la imagen se ajuste al tamaño sin distorsionarse */
+}
+
+.cuerpo li p {
+    margin: 20px;
+    font-size: 18px;
+    color: #555555;
+}
+
+.cuerpo li p:first-child {
+    font-weight: bold; /* El nombre del producto en negrita */
+}
+
+/* Estilo del bloque cuando no hay productos */
+ng-template p {
+    color: #ff0000; /* Texto en rojo */
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+/* Adaptación para pantallas pequeñas */

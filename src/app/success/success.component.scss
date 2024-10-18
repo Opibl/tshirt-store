@@ -1,0 +1,42 @@
+/* Estilo del contenedor */
+.container {
+    max-width: 600px; /* Ancho máximo del contenedor */
+    margin: 50px auto; /* Centrando el contenedor */
+    padding: 20px; /* Espaciado interno */
+    background-color: #ffffff; /* Color de fondo blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    text-align: center; /* Alinear el texto al centro */
+    height: 900px;
+}
+
+/* Estilo del encabezado */
+h1 {
+    font-size: 2.5em; /* Tamaño de fuente del encabezado */
+    margin-bottom: 20px; /* Espaciado inferior */
+    color: #dc3545; /* Color rojo */
+}
+
+/* Estilo del párrafo */
+p {
+    font-size: 1.2em; /* Tamaño de fuente del párrafo */
+    margin-bottom: 30px; /* Espaciado inferior */
+}
+
+/* Estilo del botón */
+.btn {
+    display: inline-block; /* Mostrar como bloque en línea */
+    padding: 10px 20px; /* Espaciado interno del botón */
+    font-size: 1em; /* Tamaño de fuente del botón */
+    color: #ffffff; /* Color de texto blanco */
+    background-color: #007bff; /* Color de fondo azul */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    text-decoration: none; /* Sin subrayado */
+    transition: background-color 0.3s; /* Transición de color */
+}
+
+/* Estilo del botón al pasar el mouse */
+.btn:hover {
+    background-color: #0056b3; /* Color más oscuro al pasar el mouse */
+}
