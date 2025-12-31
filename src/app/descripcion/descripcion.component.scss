@@ -168,18 +168,79 @@ body {
 @media (max-width: 1100px) {
 
     .cuerpo {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: center;
     }
 
-    .imagen,
-    .descripcion,
+    .imagen {
+        grid-column: 1 / 2;
+        max-width: 100%;
+    }
+
+    .descripcion {
+        grid-column: 2 / 3;
+        font-size: 1.3rem;
+    }
+
     .contenedor-botones {
         grid-column: 1 / -1;
-        text-align: center;
+        justify-content: center;
     }
 
-    .contenedor-botones {
-        justify-content: center;
+    .foto,
+    .precio {
+        width: 100%;
+        max-width: 280px;
     }
 }
 
+
+@media (max-width: 600px) {
+
+    .cuerpo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+
+    .imagen {
+        padding: 0;
+        max-width: 100%;
+    }
+
+    .foto {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .precio {
+        width: 100%;
+        max-width: 260px;
+        font-size: 1.4rem;
+    }
+
+    .descripcion {
+        width: 100%;
+        font-size: 1.4rem;
+        text-align: left;
+    }
+
+    .contenedor-botones {
+        width: 100%;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .boton {
+        width: 100%;
+        padding: 1.4rem;
+        font-size: 1.4rem;
+    }
+
+    .navegacion {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}
