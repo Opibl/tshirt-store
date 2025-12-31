@@ -21,7 +21,7 @@
                     <img class="producto__imagen" src="/assets/img/{{producto.id}}.jpg" [alt]="'imagen ' + producto.nombre">
                     <div class="producto__informacion">
                         <p class="producto__nombre">{{ producto.nombre }}</p>
-                        <p class="producto__precio">{{ producto.precio | currency:'CLP' }}</p>
+                        <p class="producto__precio">{{ producto.precio | number:'1.0-0' }} CLP</p>
                     </div>
                 </a>
             </div> <!-- .producto -->

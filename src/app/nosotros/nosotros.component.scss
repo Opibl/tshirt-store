@@ -1,3 +1,6 @@
+/* ===============================
+   VARIABLES
+================================ */
 $primario: #9C27B0;
 $primarioOscuro: #89119D;
 $secundario: #FFCE00;
@@ -6,98 +9,217 @@ $blanco: #FFF;
 $negro: #000;
 $fuentePrincipal: 'Staatliches', cursive;
 
+/* ===============================
+   BASE
+================================ */
+* {
+    box-sizing: border-box;
+}
 
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
 
-/** Globales **/
 .body {
     background-color: $primario;
     font-size: 1.6rem;
-    line-height: 1.5;
-    padding-bottom: 2rem;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: 4rem;
+    color: $blanco;
 }
 
+/* ===============================
+   HEADER
+================================ */
 .header__contenido {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     background-color: $primario;
 }
 
 .header__logo {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    height: 60px;
+    padding: 2rem 0;
+    height: 6rem;
 }
 
+/* ===============================
+   NAVEGACIÓN
+================================ */
 .navegacion {
     font-family: $fuentePrincipal;
     text-transform: uppercase;
     font-weight: bold;
     display: flex;
-    gap: 20px;
+    gap: 2rem;
     background-color: $primarioOscuro;
     width: 100%;
     justify-content: center;
-    margin-bottom: 4rem;
+    padding: 1rem 0;
 }
 
 .navegacion__enlace {
     text-decoration: none;
-    color: #fff2f2;
-    padding: 10px;
+    color: $blanco;
+    padding: 1rem;
     font-size: 2rem;
 }
-
-
 
 .navegacion__enlace--activo,
 .navegacion__enlace:hover {
     color: $secundario;
 }
 
-
+/* ===============================
+   CUERPO
+================================ */
 .cuerpo {
-    background-color: $primarioOscuro;
-    width: 80rem;
-    height: 40rem;
+    max-width: 100rem;
+    width: 100%;
+    margin: 4rem auto;
+    padding: 0 2rem;
+}
+
+/* ===============================
+   SECCIONES COMO CARDS
+================================ */
+.seccion {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 1.8rem;
+    padding: 3.5rem;
+    margin-bottom: 4rem;
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.seccion:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+/* ===============================
+   TÍTULOS
+================================ */
+.seccion h1,
+.seccion h2 {
+    font-family: $fuentePrincipal;
+    color: $secundario;
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+}
+
+/* ===============================
+   TEXTO
+================================ */
+.seccion p {
+    font-size: 1.7rem;
+    line-height: 1.8;
     color: $blanco;
-    padding: 2rem 2rem;
-    /* Propiedades para centrar el cuerpo */
-    margin: 0 auto; /* Centra horizontalmente */
-    display: flex; /* Utiliza flexbox para centrar contenido */
-    flex-direction: column; /* Organiza en columna */
-    text-align: center; /* Alinea el texto al centro */
-    
+    text-align: justify;
 }
 
+/* ===============================
+   INTRO (HERO)
+================================ */
+.seccion--intro {
+    text-align: center;
+}
 
+.seccion--intro p {
+    max-width: 70rem;
+    margin: 0 auto;
+    text-align: center;
+}
 
+/* ===============================
+   VALORES
+================================ */
+.seccion--valores {
+    background-color: rgba(0, 0, 0, 0.25);
+}
 
+.valores {
+    list-style: none;
+    display: grid;
+    gap: 2rem;
+    margin-top: 3rem;
+    padding: 0;
+}
 
+.valores li {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 1.2rem;
+    font-size: 1.6rem;
+    line-height: 1.6;
+}
 
+.valores strong {
+    color: $secundario;
+    font-family: $fuentePrincipal;
+}
 
-/* Para dispositivos pequeños (teléfonos móviles) */
-@media (max-width: 599px) {
-    .cuerpo{
-        width: 20rem;
-        height: 60rem;
-        font-size: 1rem;
+/* ===============================
+   CIERRE
+================================ */
+.seccion--cierre {
+    text-align: center;
+}
+
+.cierre__destacado {
+    margin-top: 2rem;
+    font-size: 1.9rem;
+    font-family: $fuentePrincipal;
+    color: $secundario;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+    .navegacion {
+        gap: 1.5rem;
+    }
+
+    .navegacion__enlace {
+        font-size: 1.7rem;
+    }
+
+    .seccion {
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .seccion p {
+        font-size: 1.5rem;
+        text-align: left;
+    }
+
+    .seccion--intro p {
+        text-align: left;
     }
 }
 
+@media (max-width: 480px) {
+    .navegacion {
+        flex-wrap: wrap;
+    }
 
-/* Para dispositivos medianos (tabletas) */
-@media (min-width: 600px) and (max-width: 1398px) {
-    .cuerpo{
-        width: 30rem;
-        font-size: 1rem;
+    .navegacion__enlace {
+        font-size: 1.6rem;
+    }
+
+    .seccion {
+        padding: 2rem;
+    }
+
+    .valores li {
+        padding: 1.5rem;
+        font-size: 1.5rem;
     }
 }
-
-@media (min-height: 1280px) {
-    .cuerpo{
-        height: 950px;
-    }
-}
-

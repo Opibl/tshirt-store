@@ -96,8 +96,17 @@ h3 {
 /** Productos **/
 .producto {
     background-color: $primarioOscuro;
-    padding: 1rem;
+    border-radius: 1.6rem;
+    overflow: hidden; // 🔑 evita desbordes
+    box-shadow: 0 10px 25px rgba(0,0,0,.35);
+    transition: transform .3s ease, box-shadow .3s ease;
 }
+
+.producto:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,.5);
+}
+
 
 .producto__nombre {
     font-size: 2rem;

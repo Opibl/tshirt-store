@@ -19,7 +19,7 @@
             <ul>
             <li *ngFor="let prod of productos; let i = index"> <!-- Agrega el índice -->
                 <p>Nombre: {{ prod.nombre }}</p>
-                <p>Precio: {{ prod.precio | currency:'CLP' }}</p>
+                <p>Precio: {{ prod.precio | number:'1.0-0' }} CLP</p>
                 <img src="/assets/img/{{prod.id}}.jpg" alt="imagen" class="img-producto">
                 <button (click)="eliminarDelCarrito(i)">Eliminar</button> <!-- Pasa el índice -->
             </li>
