@@ -83,8 +83,14 @@ body {
     gap: 2rem;
     padding: 2rem;
     background-color: $primario;
-    height: 100%;
+
+    /* 🔑 CLAVE: evita que los elementos se estiren verticalmente */
+    align-items: start;
+
+    /* Permite que el contenido determine el alto */
+    height: auto;
 }
+
 
 /* Imagen */
 .imagen {
@@ -130,15 +136,17 @@ body {
 
 /* Botones */
 .contenedor-botones {
-    grid-column: 5 / 12;
+    margin-top: 2rem;
     display: flex;
     gap: 1rem;
+    justify-content: center;
 }
+
 
 .boton {
     text-transform: uppercase;
     font-weight: bold;
-    background-color: $primarioOscuro;
+    background-color: $primario;
     color: $blanco;
     border: none;
     padding: 1rem 2rem;
@@ -165,6 +173,78 @@ body {
     font-family: $fuentePrincipal;
     text-align: center;
     font-size: 1.2rem;
+}
+
+.selector-talla {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+/* TÍTULO TALLA */
+.label-talla {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  color: #111;
+}
+
+/* CONTENEDOR BOTONES */
+.tallas {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* BOTÓN TALLA */
+.talla-btn {
+  width: 45px;
+  height: 45px;
+  background-color: #7b2cbf; /* morado */
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* HOVER AMARILLO */
+.talla-btn:hover {
+  background-color: #facc15; /* amarillo */
+  color: #111;
+}
+
+/* TALLA ACTIVA */
+.talla-btn.activa {
+  background-color: #4c1d95;
+}
+
+/* TEXTO TALLA ELEGIDA */
+.talla-elegida {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #111;
+}
+
+/* CANTIDAD */
+.cantidad {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cantidad label {
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.cantidad input {
+  width: 70px;
+  padding: 0.4rem;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 /* =====================

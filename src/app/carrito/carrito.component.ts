@@ -1,72 +1,114 @@
 import { Component, OnInit } from '@angular/core';
-import { CARRITOService } from '../carrito.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { ServicoService } from '../servico.service';
+import { FormsModule } from '@angular/forms';
 import { loadStripe } from '@stripe/stripe-js';
 
+import { CARRITOService } from '../carrito.service';
+import { ServicoService } from '../servico.service';
 
 @Component({
   selector: 'app-carrito',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './carrito.component.html',
   styleUrls: ['./carrito.component.scss'],
 })
 export class CarritoComponent implements OnInit {
-  id: string | null = null;
-  precio: number = 0;
-  descripcion: string = '';
+
   productos: any[] = [];
   total: number = 0;
 
-  constructor(private carrito: CARRITOService,private router: Router,private servicio: ServicoService) {}
+  constructor(
+    private carrito: CARRITOService,
+    private router: Router,
+    private servicio: ServicoService
+  ) {}
 
   ngOnInit(): void {
-    if (typeof window !== 'undefined' && localStorage) {
-      const productosJSON = localStorage.getItem('carrito');
+
+    // 🔹 Cargar carrito desde localStorage (FORMA SEGURA)
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const productosJSON = window.localStorage.getItem('carrito');
       if (productosJSON) {
         this.productos = JSON.parse(productosJSON);
       }
     }
 
-    if (this.productos && Array.isArray(this.productos)) {
-      this.productos.forEach(prod => {
-        console.log(`Producto: ${prod.nombre}, Precio: ${prod.precio}`);
-        this.total += Number(prod.precio);
-      });
-    } else {
-      console.log('No hay productos en el carrito');
-    }
-    console.log(this.productos);
+    // 🔹 Normalizar cantidades
+    this.productos.forEach(p => {
+      if (!p.cantidad || p.cantidad < 1) {
+        p.cantidad = 1;
+      }
+    });
+
+    // 🔹 Calcular total inicial
+    this.calcularTotal();
   }
 
+  // ❌ Eliminar producto
   eliminarDelCarrito(index: number) {
-    this.productos.splice(index, 1); // Eliminar el producto del array
-    localStorage.setItem('carrito', JSON.stringify(this.productos)); // Actualizar localStorage
-    this.calcularTotal(); // Recalcular el total
+    this.productos.splice(index, 1);
+    window.localStorage.setItem('carrito', JSON.stringify(this.productos));
+    this.calcularTotal();
   }
 
+  // 🔢 Actualizar cantidades manuales
+  actualizarCantidad() {
+    this.productos.forEach(p => {
+      if (!p.cantidad || p.cantidad < 1) {
+        p.cantidad = 1;
+      }
+    });
+
+    window.localStorage.setItem('carrito', JSON.stringify(this.productos));
+    this.calcularTotal();
+  }
+
+  // 💰 Calcular total general
   calcularTotal() {
-    this.total = this.productos.reduce((sum, prod) => sum + Number(prod.precio), 0);
+    this.total = this.productos.reduce(
+      (sum, p) => sum + Number(p.precio) * p.cantidad,
+      0
+    );
   }
 
+  // 💳 FINALIZAR COMPRA (STRIPE CORRECTO)
   async terminarCompra() {
-    // Llama a tu servicio para obtener la sesión de Stripe
-    this.servicio.stripe(this.productos).subscribe(async (response: any) => {
-      const stripe = await loadStripe('pk_test_51QB27JLN0Hr2xNnZ4HgbiEBQMEXwZbTiRL3uf5nUwNzj85O2ZG2p0Zw8qKwg9cbcvbXrVgKRj93CfQs5mnXjdbLv007JzJB6HW');
-  
+
+    if (!this.productos.length) return;
+
+    // 🔹 AGRUPAR POR id + talla
+    const productosAgrupados: any[] = [];
+
+    this.productos.forEach(p => {
+      const existente = productosAgrupados.find(
+        x => x.id === p.id && x.talla === p.talla
+      );
+
+      if (existente) {
+        existente.cantidad += p.cantidad;
+      } else {
+        productosAgrupados.push({ ...p });
+      }
+    });
+
+    // 🔹 Enviar SOLO productos agrupados a Stripe
+    this.servicio.stripe(productosAgrupados).subscribe(async (response: any) => {
+
+      const stripe = await loadStripe(
+        'pk_test_51QB27JLN0Hr2xNnZ4HgbiEBQMEXwZbTiRL3uf5nUwNzj85O2ZG2p0Zw8qKwg9cbcvbXrVgKRj93CfQs5mnXjdbLv007JzJB6HW'
+      );
+
       if (stripe && response.id) {
-        // Redirige al usuario a la página de pago de Stripe
         const { error } = await stripe.redirectToCheckout({
           sessionId: response.id
         });
-  
+
         if (error) {
-          console.error('Error en la redirección al checkout:', error);
+          console.error('Error en la redirección:', error);
         }
       }
     });
   }
-  
 }

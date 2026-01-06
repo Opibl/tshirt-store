@@ -46,31 +46,32 @@ server.get('/productos', async (req, res) => {
 
 server.post('/create-checkout-session', async (req, res) => {
   try {
-    // Mapea los productos del cuerpo de la solicitud
-    const line_items = req.body.productos.map((item) => {
-      return {
-        price_data: {
-          currency: 'clp',
-          product_data: {
-            name: item.nombre, // Nombre del producto
-          },
-          unit_amount: item.precio, // Precio en centavos (Stripe requiere este formato)
+
+    const productos = req.body.productos;
+
+    console.log('Productos recibidos:', productos);
+
+    const line_items = productos.map(item => ({
+      price_data: {
+        currency: 'clp',
+        product_data: {
+          name: `${item.nombre} - Talla ${item.talla}`,
         },
-        quantity: item.quantity || 1, // Cantidad de producto
-      };
-    });
+        unit_amount: Number(item.precio), // 🔑 PRECIO UNITARIO EN CENTAVOS
+      },
+      quantity: Number(item.cantidad), // 🔑 AQUÍ ESTABA EL ERROR
+    }));
 
-    // Crea la sesión de Stripe
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'], // Métodos de pago aceptados
-      line_items: line_items, // Productos mapeados
-      mode: 'payment', // Modo de pago
-      success_url: 'https://tshirt-storeop.netlify.app/success', // URL de éxito
-      cancel_url: 'https://tshirt-storeop.netlify.app/cancel',  // URL de cancelación
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items,
+      success_url: 'https://tshirt-storeop.netlify.app/success',
+      cancel_url: 'https://tshirt-storeop.netlify.app/cancel',
     });
 
-    // Envía la sesión creada como respuesta
     res.status(200).json({ id: session.id });
+
   } catch (error) {
     console.error('Error al crear la sesión de pago:', error);
     res.status(500).json({ error: 'Hubo un problema al crear la sesión de pago' });

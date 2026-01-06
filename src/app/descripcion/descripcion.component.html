@@ -18,15 +18,63 @@
         <div class="imagen">
             <img src="/assets/img/{{id}}.jpg" alt="imagen" class="foto">
             <div class="precio">{{precio}} clp</div>
+
+            <div class="selector-talla">
+
+                <p class="label-talla">TALLA</p>
+
+                <div class="tallas">
+                    <button
+                        *ngFor="let talla of tallas"
+                        type="button"
+                        class="talla-btn"
+                        [class.activa]="tallaSeleccionada === talla"
+                        (click)="tallaSeleccionada = talla">
+                        {{ talla }}
+                    </button>
+                </div>
+
+                <!-- MENSAJE TALLA SELECCIONADA -->
+                <p class="talla-elegida" *ngIf="tallaSeleccionada">
+                    Talla seleccionada: <strong>{{ tallaSeleccionada }}</strong>
+                </p>
+
+                <!-- CANTIDAD -->
+                <div class="cantidad">
+                    <label>Cantidad</label>
+                    <input
+                    type="number"
+                    min="1"
+                    [(ngModel)]="cantidadSeleccionada">
+                </div>
+
+            </div>
+
+
         </div>
 
-        <div class="descripcion">
+       <div class="descripcion">
             <p>{{ descripcion }}</p>
+
+            <div class="contenedor-botones">
+                <button
+                    class="boton agregar-carrito"
+                    [disabled]="!tallaSeleccionada"
+                    (click)="addToCart()">
+                    Agregar al carrito
+                </button>
+
+                <button
+                    class="boton comprar-ahora"
+                    [disabled]="!tallaSeleccionada"
+                    (click)="comprarAhora()">
+                    Comprar ahora
+                </button>
+            </div>
         </div>
-        <div class="contenedor-botones">
-            <button class="boton agregar-carrito" (click) = "addToCart(nombre,precio)">Agregar a carrito</button>
-            <button class="boton comprar-ahora" (click) = "comprarAhora()">Comprar Ahora</button>
-        </div>
+
+
+
     </div>
 
     

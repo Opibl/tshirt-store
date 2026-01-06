@@ -1,163 +1,277 @@
+/* =====================
+   VARIABLES
+===================== */
 $primario: #9C27B0;
 $primarioOscuro: #89119D;
 $secundario: #FFCE00;
 $secundarioOscuro: rgb(233, 187, 2);
-$blanco: #FFF;
+$blanco: #fff;
 $negro: #000;
 $fuentePrincipal: 'Staatliches', cursive;
 
+/* =====================
+   RESET / BASE
+===================== */
+html, .body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: $primario;
+}
+
+.body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: $primario;
+}
+
+
 html {
-    box-sizing: border-box;
-    font-size: 62.5%; /* 1rem = 10px */
-    background-color: $primario;
+  box-sizing: border-box;
+  font-size: 62.5%;
+  background-color: $primario;
 }
 
-*, *:before, *:after {
-    box-sizing: inherit;
-}
-/* Estilo del contenedor .cuerpo */
-.cuerpo {
-    height: 800px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: $primario; /* Fondo blanco para el área de contenido */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
-.boton {
-    margin-left: 1rem;
-    margin-top: 1rem;
-    text-transform: uppercase;
-    font-weight: bold;
-    background-color: $primarioOscuro;   /* Usar color secundario definido */
-    height: 4rem;
-    width: 12rem;
-    color: $blanco;                   /* Texto en negro para contraste */
-    border: none;                    /* Sin bordes */
-    padding: 1rem 2rem;              /* Espaciado interno del botón */
-    font-size: 1rem;               /* Tamaño de fuente */
-    cursor: pointer;                 /* Cambiar el cursor a mano al pasar */
-    transition: background-color 0.3s ease; /* Transición suave al pasar el mouse */
+/* =====================
+   BODY
+===================== */
+.body {
+  background-color: $primario;
+  min-height: 100vh;
+  font-family: $fuentePrincipal;
 }
 
-.contenedor-botones{
-    grid-column: 5 / 12 ;
-}
-/* Efecto hover (cuando el mouse está sobre el botón) */
-.boton:hover {
-    background-color: $secundarioOscuro; /* Cambiar el color cuando se pasa el mouse */
-    color: $blanco;                      /* Texto en blanco para mejor contraste */
-}
-
+/* =====================
+   HEADER
+===================== */
 .header__contenido {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: $primario;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0;
 }
 
 .header__logo {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    height: 60px;
+  height: 55px;
 }
 
+/* =====================
+   NAVEGACIÓN
+===================== */
 .navegacion {
-    font-family: $fuentePrincipal;
-    text-transform: uppercase;
-    font-weight: bold;
-    display: flex;
-    gap: 20px;
-    background-color: $primarioOscuro;
-    width: 100%;
-    justify-content: center;
+  width: 100%;
+  background-color: $primarioOscuro;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  text-transform: uppercase;
 }
 
 .navegacion__enlace {
-    text-decoration: none;
-    color: #fff2f2;
-    padding: 10px;
-    font-size: 2rem;
+  color: $blanco;
+  text-decoration: none;
+  padding: 1rem;
+  font-size: 1.8rem;
 }
 
-
-
-.navegacion__enlace--activo,
-.navegacion__enlace:hover {
-    color: $secundario;
+.navegacion__enlace:hover,
+.navegacion__enlace--activo {
+  color: $secundario;
 }
 
-
-
-.footer {
-    background-color: $primarioOscuro;
-    padding: 1rem 0;
-    
-}
-.footer__texto {
-    color: $blanco;
-    font-family: $fuentePrincipal;
-    text-align: center;
-    font-size: 1.2rem;
+/* =====================
+   CUERPO CARRITO
+===================== */
+.cuerpo {
+  max-width: 900px;
+  margin: 1.5rem auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-
-
+/* =====================
+   TÍTULO
+===================== */
 .cuerpo h3 {
-    margin-bottom: 20px;
-    margin-left: 100px;
-    font-size: 24px;
-    color: $blanco;
-    text-transform: uppercase;
+  font-size: 2.4rem;
+  color: $blanco;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-/* Estilo de la lista de productos */
-.cuerpo ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    max-width: 600px; /* Tamaño máximo de la lista */
-    text-transform: uppercase;
+/* =====================
+   LISTA
+===================== */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
-.cuerpo li {
-    background-color: #fafafa;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px; /* Bordes redondeados */
-    border: 1px solid #e0e0e0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* =====================
+   TARJETA PRODUCTO
+===================== */
+li {
+  background-color: $primarioOscuro;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin: 0 auto 1.5rem auto;
+  max-width: 720px;
+
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* =====================
+   IMAGEN
+===================== */
+.producto-imagen {
+  display: flex;
+  justify-content: center;
 }
 
 .img-producto {
-    width: 50px;
-    height: 50px;
-    object-fit: cover; /* Para que la imagen se ajuste al tamaño sin distorsionarse */
+  width: 90px;
+  border-radius: 0.5rem;
 }
 
-.cuerpo li p {
-    margin: 20px;
-    font-size: 18px;
-    color: #555555;
+/* =====================
+   INFO
+===================== */
+.producto-info {
+  color: $blanco;
+  font-size: 1.4rem;
 }
 
-.cuerpo li p:first-child {
-    font-weight: bold; /* El nombre del producto en negrita */
+.producto-info .nombre {
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin-bottom: 0.4rem;
 }
 
-/* Estilo del bloque cuando no hay productos */
+.producto-info p {
+  margin: 0.2rem 0;
+}
+
+.producto-info .total {
+  margin-top: 0.4rem;
+  font-size: 1.6rem;
+  color: $secundario;
+}
+
+/* =====================
+   ACCIONES
+===================== */
+.producto-acciones {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.producto-acciones button {
+  background-color: $secundario;
+  color: $negro;
+  border: none;
+  padding: 0.6rem 1.6rem;
+  border-radius: 0.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.producto-acciones button:hover {
+  background-color: $secundarioOscuro;
+}
+
+/* =====================
+   BOTÓN FINAL
+===================== */
+.contenedor-botones {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.boton {
+  background-color: $primarioOscuro;
+  color: $blanco;
+  border: none;
+  padding: 1.2rem 3.5rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.boton:hover {
+  background-color: $secundarioOscuro;
+}
+
+/* =====================
+   CARRITO VACÍO
+===================== */
 ng-template p {
-    color: #ff0000; /* Texto en rojo */
-    font-size: 20px;
-    margin-top: 20px;
+  color: $secundario;
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 2rem;
 }
 
-/* Adaptación para pantallas pequeñas */
+.footer {
+  background-color: $primarioOscuro;
+  margin: 0;
+  padding: 1.5rem 0;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+@media (max-width: 900px) {
+  li {
+    grid-template-columns: 90px 1fr;
+  }
+
+  .producto-acciones {
+    grid-column: 1 / -1;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .cuerpo {
+    padding: 1rem;
+  }
+
+  li {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .producto-imagen {
+    margin-bottom: 1rem;
+  }
+
+  .producto-acciones {
+    margin-top: 1rem;
+  }
+
+  .boton {
+    width: 100%;
+  }
+}

@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 export interface Producto {
-  id:any;
+  id: any;
   nombre: any;
   precio: any;
+  talla: any;
+  cantidad: number;
 }
 
 @Injectable({
@@ -12,39 +14,50 @@ export interface Producto {
 })
 export class CARRITOService {
 
-  producto:any;
-  private productos: Producto[] = []; // Array para almacenar los productos en el carrito
-
+  private productos: Producto[] = [];
 
   constructor() {
-    this.cargarDesdeLocalStorage(); 
+    this.cargarDesdeLocalStorage();
   }
 
+  // 🛒 AGREGAR PRODUCTO (SIN DUPLICAR)
+  Agregar(producto: Producto) {
 
-  Agregar(producto:any){
-    this.productos.push(producto);
+    // 🔎 Buscar si ya existe el mismo producto + talla
+    const existente = this.productos.find(
+      item =>
+        item.id === producto.id &&
+        item.talla === producto.talla
+    );
+
+    if (existente) {
+      // ✅ Si existe, sumar cantidad
+      existente.cantidad += producto.cantidad;
+    } else {
+      // ✅ Si no existe, agregar nuevo
+      this.productos.push(producto);
+    }
 
     this.guardarEnLocalStorage();
-    // Usar 'of()' para devolver el valor dentro de un Observable
-    console.log("lo agregue",this.producto.nombre,this.producto.precio)
     return producto;
   }
 
-  Consultar(): Observable<any> {
-    console.log("Producto consultado:", this.producto);
-    // Usar 'of()' para devolver el valor dentro de un Observable
-    return of(this.producto); 
+  // 👀 CONSULTAR CARRITO
+  Consultar(): Observable<Producto[]> {
+    return of(this.productos);
   }
 
+  // 💾 GUARDAR EN LOCALSTORAGE
   guardarEnLocalStorage(): void {
-    localStorage.setItem('carrito', JSON.stringify(this.productos)); // Guardar el carrito en el localStorage
+    localStorage.setItem('carrito', JSON.stringify(this.productos));
   }
 
+  // 📦 CARGAR DESDE LOCALSTORAGE
   cargarDesdeLocalStorage(): void {
-    if (typeof window !== 'undefined' && localStorage) { // Comprobar si localStorage está disponible
+    if (typeof window !== 'undefined' && localStorage) {
       const productosJSON = localStorage.getItem('carrito');
       if (productosJSON) {
-        this.productos = JSON.parse(productosJSON); // Cargar productos existentes desde localStorage
+        this.productos = JSON.parse(productosJSON);
       }
     }
   }
