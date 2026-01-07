@@ -275,3 +275,57 @@ ng-template p {
     width: 100%;
   }
 }
+
+
+@media (max-width: 600px) {
+
+  .cuerpo {
+    padding: 1rem;
+  }
+
+  ul {
+    width: 100%;
+  }
+
+  li {
+    width: 100%;
+    max-width: 100%;     // 🔥 clave
+    padding: 1rem;      // menos padding
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .producto-imagen {
+    margin-bottom: 1rem;
+  }
+
+  .img-producto {
+    width: 70px;        // imagen más pequeña
+  }
+
+  .producto-info {
+    font-size: 1.3rem;
+  }
+
+  .producto-info .nombre {
+    font-size: 1.5rem;
+  }
+
+  .producto-info .total {
+    font-size: 1.4rem;
+  }
+
+  .producto-acciones {
+    margin-top: 1rem;
+    justify-content: center;
+  }
+
+  .producto-acciones button {
+    width: 100%;        // botón full width
+  }
+
+  .boton {
+    width: 100%;
+  }
+}
+

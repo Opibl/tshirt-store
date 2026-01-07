@@ -4,24 +4,23 @@ $primarioOscuro: #89119D;
 $secundario: #FFCE00;
 $blanco: #fff;
 $negro: #000;
-$gris: #eaeaea;
 $fuente: 'Staatliches', cursive;
 
-/* 🔧 NORMALIZACIÓN */
+/* 🔧 RESET */
 * {
   box-sizing: border-box;
 }
 
 html {
-  font-size: 62.5%; // 1rem = 10px
+  font-size: 62.5%;
 }
 
 html, body {
-  height: 100%;
   margin: 0;
+  min-height: 100%;
 }
 
-/* CONTENEDOR PRINCIPAL */
+/* 📱 BODY */
 .body {
   min-height: 100vh;
   background-color: $primario;
@@ -31,31 +30,31 @@ html, body {
   color: $blanco;
 }
 
-/* HEADER (LOGO CENTRADO) */
+/* HEADER */
 .header {
   background-color: $primarioOscuro;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
   display: flex;
   justify-content: center;
 }
 
 .header__logo {
-  height: 5rem;
+  height: 4.5rem;
 }
 
-/* NAVEGACIÓN DEBAJO */
+/* NAV */
 .navegacion {
   background-color: $primarioOscuro;
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.5rem;
   padding-bottom: 1.5rem;
   flex-wrap: wrap;
 
   &__enlace {
     font-family: $fuente;
     color: $blanco;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     text-decoration: none;
 
     &:hover,
@@ -65,190 +64,181 @@ html, body {
   }
 }
 
-/* CONTENIDO */
+/* 📱 CONTENIDO (1 columna por defecto) */
 .cuerpo {
-  max-width: 120rem;
-  margin: 4rem auto;
-  padding: 0 2rem;
-
+  width: 100%;
+  padding: 1.5rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: 1fr;
+  gap: 2rem;
 }
 
 /* IMAGEN */
 .imagen {
   position: relative;
   background-color: $primarioOscuro;
-  border-radius: 2rem;
-  padding: 2rem;
-  box-shadow: 0 20px 40px rgba(0,0,0,.35);
+  border-radius: 1.5rem;
+  padding: 1.2rem;
 }
 
 .foto {
   width: 100%;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
 }
 
 /* PRECIO */
 .precio {
   position: absolute;
-  top: 2rem;
-  right: 2rem;
-
+  top: 1rem;
+  right: 1rem;
   background-color: $secundario;
   color: $negro;
   font-family: $fuente;
-  font-size: 2rem;
-  padding: .8rem 1.6rem;
+  font-size: 1.6rem;
+  padding: .6rem 1.2rem;
   border-radius: 3rem;
-  box-shadow: 0 10px 25px rgba(0,0,0,.35);
 }
 
-/* SELECTOR DE TALLA */
+/* TALLAS */
 .selector-talla {
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 .label-talla {
   font-family: $fuente;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  margin-bottom: .8rem;
 }
 
 .tallas {
   display: flex;
-  gap: 1rem;
+  gap: .8rem;
   flex-wrap: wrap;
 }
 
 .talla-btn {
-  background-color: transparent;
+  background: transparent;
   border: 2px solid $secundario;
   color: $secundario;
   font-family: $fuente;
-  font-size: 1.5rem;
-  padding: .8rem 1.4rem;
-  border-radius: 1rem;
+  font-size: 1.3rem;
+  padding: .6rem 1rem;
+  border-radius: .8rem;
   cursor: pointer;
-  transition: all .25s ease;
 
+  &.activa,
   &:hover {
     background-color: $secundario;
     color: $negro;
   }
-
-  &.activa {
-    background-color: $secundario;
-    color: $negro;
-    transform: scale(1.05);
-  }
 }
 
 .talla-elegida {
-  margin-top: 1.5rem;
-  font-size: 1.5rem;
+  margin-top: 1rem;
+  font-size: 1.3rem;
 }
 
 /* CANTIDAD */
 .cantidad {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 
   label {
+    font-size: 1.3rem;
     display: block;
-    margin-bottom: .5rem;
-    font-size: 1.4rem;
+    margin-bottom: .4rem;
   }
 
   input {
     width: 100%;
-    max-width: 12rem;
-    padding: .8rem;
-    font-size: 1.5rem;
-    border-radius: .8rem;
+    max-width: 10rem;
+    padding: .6rem;
+    border-radius: .6rem;
     border: none;
-    outline: none;
   }
 }
 
 /* DESCRIPCIÓN */
 .descripcion {
   background-color: $primarioOscuro;
-  padding: 3rem;
-  border-radius: 2rem;
-  box-shadow: 0 20px 40px rgba(0,0,0,.35);
+  padding: 2rem 1.5rem;
+  border-radius: 1.5rem;
 
   p {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     line-height: 1.6;
   }
 }
 
 /* BOTONES */
 .contenedor-botones {
-  margin-top: 3rem;
+  margin-top: 2rem;
   display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
 .boton {
-  flex: 1;
-  min-width: 20rem;
+  width: 100%;
   padding: 1.2rem;
   font-family: $fuente;
-  font-size: 1.6rem;
-  border-radius: 1.2rem;
+  font-size: 1.4rem;
+  border-radius: 1rem;
   border: none;
   cursor: pointer;
-  transition: all .3s ease;
 }
 
 .agregar-carrito {
   background-color: $secundario;
   color: $negro;
-
-  &:hover {
-    background-color: darken($secundario, 8%);
-  }
 }
 
 .comprar-ahora {
-  background-color: transparent;
+  background: transparent;
   border: 2px solid $secundario;
   color: $secundario;
+}
 
-  &:hover {
-    background-color: $secundario;
-    color: $negro;
+
+@media (min-width: 768px) {
+
+  .header__logo {
+    height: 5rem;
   }
-}
 
-.boton:disabled {
-  opacity: .4;
-  cursor: not-allowed;
-}
-
-/* 📱 RESPONSIVE */
-@media (max-width: 768px) {
+  .cuerpo {
+    padding: 3rem;
+  }
 
   .precio {
     font-size: 1.8rem;
   }
 
-  .label-talla {
-    font-size: 1.8rem;
+  .boton {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+
+  .cuerpo {
+    max-width: 120rem;
+    margin: 4rem auto;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
   }
 
-  .descripcion p {
-    font-size: 1.5rem;
+  .imagen,
+  .descripcion {
+    padding: 3rem;
+    border-radius: 2rem;
+  }
+
+  .contenedor-botones {
+    flex-direction: row;
   }
 
   .boton {
-    font-size: 1.5rem;
+    flex: 1;
+    font-size: 1.6rem;
   }
 }
