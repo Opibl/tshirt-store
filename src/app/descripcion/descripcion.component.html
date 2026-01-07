@@ -1,23 +1,25 @@
 <section class="body">
     <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
-    <header class="header">
-        <div class="header__contenido">
-            <a href="">
-                <img class="header__logo" src="/assets/img/logo.png" alt="Logotipo">
-            </a>
 
-            <nav class="navegacion">
-                <a class="navegacion__enlace navegacion__enlace--activo" href="">Tienda</a>
-                <a class="navegacion__enlace" href="/nosotros">Nosotros</a>
-                <a class="navegacion__enlace" href="/carrito">carrito</a>
-            </nav>
-        </div>
+    <!-- HEADER SIMPLE (COMO ANTES) -->
+    <header class="header">
+        <a href="">
+            <img class="header__logo" src="/assets/img/logo.png" alt="Logotipo">
+        </a>
     </header>
 
+    <!-- NAVEGACIÓN DEBAJO -->
+    <nav class="navegacion">
+        <a class="navegacion__enlace navegacion__enlace--activo" href="">Tienda</a>
+        <a class="navegacion__enlace" href="/nosotros">Nosotros</a>
+        <a class="navegacion__enlace" href="/carrito">Carrito</a>
+    </nav>
+
+    <!-- CONTENIDO -->
     <div class="cuerpo"> 
         <div class="imagen">
-            <img src="/assets/img/{{id}}.jpg" alt="imagen" class="foto">
-            <div class="precio">{{precio}} clp</div>
+            <img src="/assets/img/{{ id }}.jpg" alt="imagen" class="foto">
+            <div class="precio">{{ precio }} CLP</div>
 
             <div class="selector-talla">
 
@@ -43,17 +45,15 @@
                 <div class="cantidad">
                     <label>Cantidad</label>
                     <input
-                    type="number"
-                    min="1"
-                    [(ngModel)]="cantidadSeleccionada">
+                        type="number"
+                        min="1"
+                        [(ngModel)]="cantidadSeleccionada">
                 </div>
 
             </div>
-
-
         </div>
 
-       <div class="descripcion">
+        <div class="descripcion">
             <p>{{ descripcion }}</p>
 
             <div class="contenedor-botones">
@@ -72,10 +72,5 @@
                 </button>
             </div>
         </div>
-
-
-
     </div>
-
-    
 </section>

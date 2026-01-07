@@ -41,9 +41,12 @@ html, body {
     background-color: $primario;
 }
 
+/* 🔧 LOGO CORREGIDO */
 .header__logo {
-    padding: 2rem 0;
-    height: 6rem;
+    padding: 3rem 0;
+    height: 10.5rem;        /* ⬅️ MÁS GRANDE */
+    max-width: 100%;
+    object-fit: contain;
 }
 
 /* ===============================
@@ -58,7 +61,7 @@ html, body {
     background-color: $primarioOscuro;
     width: 100%;
     justify-content: center;
-    padding: 1rem 0;
+    padding: 1.2rem 0;
 }
 
 .navegacion__enlace {
@@ -182,6 +185,11 @@ html, body {
    RESPONSIVE
 ================================ */
 @media (max-width: 768px) {
+
+    .header__logo {
+        height: 10rem;   /* ⬅️ tablet */
+    }
+
     .navegacion {
         gap: 1.5rem;
     }
@@ -206,6 +214,11 @@ html, body {
 }
 
 @media (max-width: 480px) {
+
+    .header__logo {
+        height: 10rem;   /* ⬅️ móvil */
+    }
+
     .navegacion {
         flex-wrap: wrap;
     }

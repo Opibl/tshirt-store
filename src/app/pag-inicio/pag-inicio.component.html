@@ -1,33 +1,104 @@
 <div class="body">
+    <!-- HEADER -->
     <header class="header">
         <a href="">
             <img class="header__logo" src="/assets/img/logo.png" alt="Logotipo">
         </a>
     </header>
 
+    <!-- NAVEGACIÓN -->
     <nav class="navegacion">
         <a class="navegacion__enlace navegacion__enlace--activo" href="">Tienda</a>
         <a class="navegacion__enlace" routerLink="/nosotros">Nosotros</a>
         <a class="navegacion__enlace" href="/carrito">Carrito</a>
     </nav>
 
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="contenedor">
-        <h1>Nuestros Productos</h1>
+        <h1>Tienda Oficial de Camisetas Tech</h1>
 
-        <div class="grid">
-            <!-- Usamos *ngFor para iterar sobre los productos -->
-            <div class="producto" *ngFor="let producto of productos">
-                <a [routerLink]="['/descripcion', producto.id]">
-                    <img class="producto__imagen" src="/assets/img/{{producto.id}}.jpg" [alt]="'imagen ' + producto.nombre">
-                    <div class="producto__informacion">
-                        <p class="producto__nombre">{{ producto.nombre }}</p>
-                        <p class="producto__precio">{{ producto.precio | number:'1.0-0' }} CLP</p>
-                    </div>
-                </a>
-            </div> <!-- .producto -->
+        <!-- BANNER PROMOCIONAL -->
+        <section class="banner">
+            <h2>🚚 Envío gratis sobre 20.000 CLP</h2>
+            <p>Promoción por tiempo limitado</p>
+        </section>
 
-            <div class="grafico grafico--camisas"></div>
-            <div class="grafico grafico--node"></div>
-        </div>
-    </main>    
+        <!-- BUSCADOR -->
+        <input
+            type="text"
+            class="buscador"
+            placeholder="Buscar producto..."
+            [(ngModel)]="terminoBusqueda"
+        >
+
+        <!-- CONTADOR DE RESULTADOS -->
+        <p class="contador">
+            Mostrando {{ productosFiltrados.length }} productos
+        </p>
+
+        <!-- MENSAJE SIN RESULTADOS -->
+        <p *ngIf="productosFiltrados.length === 0" class="sin-resultados">
+            No se encontraron productos 😕
+        </p>
+
+        <!-- PRODUCTOS DESTACADOS -->
+        <section class="destacados" *ngIf="productosFiltrados.length > 0">
+            <h2>⭐ Productos Destacados</h2>
+
+            <div class="grid">
+                <div
+                    class="producto destacado"
+                    *ngFor="let producto of productosFiltrados | slice:0:3"
+                >
+                    <a [routerLink]="['/descripcion', producto.id]">
+                        <img
+                            class="producto__imagen"
+                            src="/assets/img/{{ producto.id }}.jpg"
+                            [alt]="'imagen ' + producto.nombre"
+                        >
+                        <div class="producto__informacion">
+                            <p class="producto__nombre">
+                                {{ producto.nombre }}
+                            </p>
+                            <p class="producto__precio">
+                                {{ producto.precio | number:'1.0-0' }} CLP
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- LISTA DE PRODUCTOS -->
+        <section class="lista-productos">
+            <h2>Todos los Productos</h2>
+
+            <div class="grid">
+                <div
+                    class="producto"
+                    *ngFor="let producto of productosFiltrados"
+                >
+                    <a [routerLink]="['/descripcion', producto.id]">
+                        <img
+                            class="producto__imagen"
+                            src="/assets/img/{{ producto.id }}.jpg"
+                            [alt]="'imagen ' + producto.nombre"
+                        >
+                        <div class="producto__informacion">
+                            <p class="producto__nombre">
+                                {{ producto.nombre }}
+                            </p>
+                            <p class="producto__precio">
+                                {{ producto.precio | number:'1.0-0' }} CLP
+                            </p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- GRAFICOS -->
+                <div class="grafico grafico--camisas"></div>
+                <div class="grafico grafico--node"></div>
+            </div>
+        </section>
+    </main>
 </div>
