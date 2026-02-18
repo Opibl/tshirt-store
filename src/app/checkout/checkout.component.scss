@@ -1,0 +1,154 @@
+.checkout {
+
+  max-width: 500px;
+  margin: 60px auto;
+  padding: 30px;
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+}
+
+
+/* TITULO */
+
+.checkout h2 {
+
+  text-align: center;
+
+  margin-bottom: 10px;
+
+  font-size: 24px;
+
+  font-weight: 600;
+
+  color: #222;
+
+}
+
+
+/* INPUTS */
+
+.checkout input {
+
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border-radius: 8px;
+
+  border: 1px solid #ddd;
+
+  font-size: 15px;
+
+  transition: all 0.2s ease;
+
+  outline: none;
+
+}
+
+
+/* HOVER */
+
+.checkout input:hover {
+
+  border-color: #999;
+
+}
+
+
+/* FOCUS */
+
+.checkout input:focus {
+
+  border-color: #000;
+
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+
+}
+
+
+/* BOTON */
+
+.checkout button {
+
+  margin-top: 10px;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #000;
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+}
+
+
+/* HOVER BOTON */
+
+.checkout button:hover {
+
+  background: #222;
+
+  transform: translateY(-1px);
+
+}
+
+
+/* CLICK BOTON */
+
+.checkout button:active {
+
+  transform: translateY(0);
+
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+
+  .checkout {
+
+    margin: 20px;
+
+    padding: 20px;
+
+  }
+
+}
+
+.boton-atras {
+
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  color: #333;
+
+}
+
+.boton-atras:hover {
+
+  text-decoration: underline;
+
+}

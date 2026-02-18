@@ -48,8 +48,10 @@ server.post('/create-checkout-session', async (req, res) => {
   try {
 
     const productos = req.body.productos;
+    const envio = req.body.envio; // ← agregado
 
     console.log('Productos recibidos:', productos);
+    console.log('Datos envío:', envio);
 
     const line_items = productos.map(item => ({
       price_data: {
@@ -57,24 +59,99 @@ server.post('/create-checkout-session', async (req, res) => {
         product_data: {
           name: `${item.nombre} - Talla ${item.talla}`,
         },
-        unit_amount: Number(item.precio), // 🔑 PRECIO UNITARIO EN CENTAVOS
+        unit_amount: Number(item.precio),
       },
-      quantity: Number(item.cantidad), // 🔑 AQUÍ ESTABA EL ERROR
+      quantity: Number(item.cantidad),
     }));
 
+
+    /* ===== CALCULAR COSTO ENVÍO ===== */
+
+    const total = productos.reduce(
+      (sum, item) =>
+        sum + Number(item.precio) * Number(item.cantidad),
+      0
+    );
+
+    const costoEnvio = total >= 50000 ? 0 : 3990;
+
+
+    /* ===== CREAR SESIÓN STRIPE ===== */
+
     const session = await stripe.checkout.sessions.create({
+
       payment_method_types: ['card'],
+
       mode: 'payment',
+
       line_items,
+
+
+      /* ===== ENVÍO PROFESIONAL ===== */
+
+      shipping_options: [
+
+        {
+
+          shipping_rate_data: {
+
+            type: 'fixed_amount',
+
+            fixed_amount: {
+
+              amount: costoEnvio,
+
+              currency: 'clp'
+
+            },
+
+            display_name:
+              costoEnvio === 0
+                ? 'Envío gratis'
+                : 'Envío estándar',
+
+          }
+
+        }
+
+      ],
+
+
+      /* ===== GUARDAR DATOS CLIENTE ===== */
+
+      metadata: {
+
+        nombre: envio?.nombre || '',
+
+        email: envio?.email || '',
+
+        direccion: envio?.direccion || '',
+
+        ciudad: envio?.ciudad || '',
+
+        region: envio?.region || '',
+
+        telefono: envio?.telefono || ''
+
+      },
+
+
       success_url: 'https://tshirt-storeop.netlify.app/success',
+
       cancel_url: 'https://tshirt-storeop.netlify.app/cancel',
+
     });
 
     res.status(200).json({ id: session.id });
 
   } catch (error) {
+
     console.error('Error al crear la sesión de pago:', error);
-    res.status(500).json({ error: 'Hubo un problema al crear la sesión de pago' });
+
+    res.status(500).json({
+      error: 'Hubo un problema al crear la sesión de pago'
+    });
+
   }
 });
 
