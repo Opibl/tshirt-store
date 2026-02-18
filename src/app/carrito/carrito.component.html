@@ -1,72 +1,37 @@
 <div class="body">
-
-  <!-- HEADER -->
   <header class="header">
     <div class="header__contenido">
-
-      <a href="/">
-        <img
-          class="header__logo"
-          src="/assets/img/logo.png"
-          alt="Logotipo">
+      <a href="">
+        <img class="header__logo" src="/assets/img/logo.png" alt="Logotipo">
       </a>
 
       <nav class="navegacion">
-
-        <a
-          class="navegacion__enlace navegacion__enlace--activo"
-          href="/">
-          Tienda
-        </a>
-
-        <a
-          class="navegacion__enlace"
-          href="/nosotros">
-          Nosotros
-        </a>
-
-        <a
-          class="navegacion__enlace"
-          href="/carrito">
-          Carrito
-        </a>
-
+        <a class="navegacion__enlace navegacion__enlace--activo" href="">Tienda</a>
+        <a class="navegacion__enlace" href="/nosotros">Nosotros</a>
+        <a class="navegacion__enlace" href="/carrito">Carrito</a>
       </nav>
-
     </div>
   </header>
 
-
-
-  <!-- CUERPO -->
   <div class="cuerpo">
 
-    <!-- SI HAY PRODUCTOS -->
-    <div *ngIf="productos && productos.length > 0; else carritoVacio">
-
+    <div *ngIf="productos && productos.length > 0; else noProductos">
       <h3>Carrito de compras</h3>
 
-      <ul class="lista-carrito">
-
-        <li
-          class="producto"
-          *ngFor="let prod of productos; let i = index">
+      <ul>
+        <li *ngFor="let prod of productos; let i = index">
 
           <!-- IMAGEN -->
           <div class="producto-imagen">
-
             <img
               src="/assets/img/{{prod.id}}.jpg"
-              alt="Producto"
-              class="img-producto">
-
+              alt="imagen"
+              class="img-producto"
+            >
           </div>
-
-
 
           <!-- INFO -->
           <div class="producto-info">
-
             <p class="nombre">
               {{ prod.nombre }}
             </p>
@@ -77,8 +42,8 @@
             </p>
 
             <p>
-              <strong>Talla:</strong>
-              {{ prod.talla }}
+                <strong>Talla:</strong>
+                {{ prod.talla }}
             </p>
 
             <p>
@@ -90,76 +55,30 @@
               <strong>Total:</strong>
               {{ prod.precio * prod.cantidad | number:'1.0-0' }} CLP
             </p>
-
           </div>
-
-
 
           <!-- ACCIONES -->
           <div class="producto-acciones">
-
-            <button
-              class="boton-eliminar"
-              (click)="eliminarDelCarrito(i)">
-
+            <button (click)="eliminarDelCarrito(i)">
               Eliminar
-
             </button>
-
           </div>
 
         </li>
-
       </ul>
-
-
-
-      <!-- TOTAL GENERAL -->
-      <div class="total-general">
-
-        <h3>
-          Total a pagar:
-          {{ total | number:'1.0-0' }} CLP
-        </h3>
-
-      </div>
-
-
-
-      <!-- BOTON CHECKOUT -->
-      <div class="contenedor-botones">
-
-        <button
-          class="boton agregar-carrito"
-          (click)="terminarCompra()">
-
-          Terminar compra
-
-        </button>
-
-      </div>
-
     </div>
 
-
-
-    <!-- CARRITO VACIO -->
-    <ng-template #carritoVacio>
-
-      <div class="carrito-vacio">
-
-        <h3>Tu carrito está vacío</h3>
-
-        <a href="/" class="boton">
-          Ir a la tienda
-        </a>
-
-      </div>
-
+    <ng-template #noProductos>
+      <p>No hay productos en el carrito</p>
     </ng-template>
 
-
+    <div class="contenedor-botones">
+      <button
+        class="boton agregar-carrito"
+        (click)="terminarCompra()">
+        Terminar compra
+      </button>
+    </div>
 
   </div>
-
 </div>

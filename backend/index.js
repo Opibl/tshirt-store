@@ -73,74 +73,55 @@ server.post('/create-checkout-session', async (req, res) => {
       0
     );
 
-    const costoEnvio = total >= 50000 ? 0 : 3990;
+    const costoEnvio = total >= 20000 ? 0 : 3990;
 
 
     /* ===== CREAR SESIÓN STRIPE ===== */
 
     const session = await stripe.checkout.sessions.create({
 
-      payment_method_types: ['card'],
+    payment_method_types: ['card'],
 
-      mode: 'payment',
+    mode: 'payment',
 
-      line_items,
+    line_items,
 
+    // ✅ NECESARIO para que aparezca el envío
+    shipping_address_collection: {
+      allowed_countries: ['CL'],
+    },
 
-      /* ===== ENVÍO PROFESIONAL ===== */
-
-      shipping_options: [
-
-        {
-
-          shipping_rate_data: {
-
-            type: 'fixed_amount',
-
-            fixed_amount: {
-
-              amount: costoEnvio,
-
-              currency: 'clp'
-
-            },
-
-            display_name:
-              costoEnvio === 0
-                ? 'Envío gratis'
-                : 'Envío estándar',
-
-          }
-
+    shipping_options: [
+      {
+        shipping_rate_data: {
+          type: 'fixed_amount',
+          fixed_amount: {
+            amount: costoEnvio,
+            currency: 'clp',
+          },
+          display_name:
+            costoEnvio === 0
+              ? 'Envío gratis'
+              : 'Envío estándar',
         }
+      }
+    ],
 
-      ],
+    metadata: {
+      nombre: envio?.nombre || '',
+      email: envio?.email || '',
+      direccion: envio?.direccion || '',
+      ciudad: envio?.ciudad || '',
+      region: envio?.region || '',
+      telefono: envio?.telefono || ''
+    },
 
+    success_url: 'https://tshirt-storeop.netlify.app/success',
 
-      /* ===== GUARDAR DATOS CLIENTE ===== */
+    cancel_url: 'https://tshirt-storeop.netlify.app/cancel',
 
-      metadata: {
+  });
 
-        nombre: envio?.nombre || '',
-
-        email: envio?.email || '',
-
-        direccion: envio?.direccion || '',
-
-        ciudad: envio?.ciudad || '',
-
-        region: envio?.region || '',
-
-        telefono: envio?.telefono || ''
-
-      },
-
-
-      success_url: 'https://tshirt-storeop.netlify.app/success',
-
-      cancel_url: 'https://tshirt-storeop.netlify.app/cancel',
-
-    });
 
     res.status(200).json({ id: session.id });
 

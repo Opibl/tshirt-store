@@ -5,7 +5,6 @@ import { NosotrosComponent } from './nosotros/nosotros.component';
 import { CarritoComponent } from './carrito/carrito.component';
 import { SuccessComponent } from './success/success.component';
 import { CancelComponent } from './cancel/cancel.component';
-import { CheckoutComponent } from './checkout/checkout.component';
 
 export const routes: Routes = [
     {path:'',component:PagInicioComponent},
@@ -14,5 +13,4 @@ export const routes: Routes = [
     {path:'carrito',component:CarritoComponent},
     {path:'success',component:SuccessComponent},
     {path:'cancel',component:CancelComponent},
-    { path: 'checkout', component: CheckoutComponent },
 ];
