@@ -1,37 +1,52 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicoService {
 
-  servidor = "https://back-store-mu.vercel.app/";
+  // 🔹 URL del backend
+  //private servidor = 'http://localhost:3000';
 
-  constructor(private servicio:HttpClient) { }
+  // 🔹 En producción usar esto:
+  private servidor = 'https://back-store-mu.vercel.app';
 
-  Consultar():Observable<any>{
+  constructor(private http: HttpClient) {}
 
-    return this.servicio.get(`${this.servidor}`);
-   
-  }
-
+  // 🔹 Obtener productos
   obtenerDatos(): Observable<any> {
-    return this.servicio.get(`${this.servidor}productos`);
+
+    return this.http
+      .get(`${this.servidor}/productos`)
+      .pipe(
+        catchError(this.manejarError)
+      );
+
   }
 
-  stripe(productos: any): Observable<any> {
-    return this.servicio.post(`${this.servidor}create-checkout-session`, { productos })
+  // 🔹 Crear sesión Stripe Checkout
+  stripe(productos: any[]): Observable<any> {
+
+    return this.http
+      .post(`${this.servidor}/create-checkout-session`, {
+        productos: productos
+      })
       .pipe(
-        catchError(error => {
-          console.error('Error en la sesión de Stripe:', error);
-          return throwError(error);
-        })
+        catchError(this.manejarError)
       );
+
   }
-  
+
+  // 🔹 Manejo centralizado de errores
+  private manejarError(error: any) {
+
+    console.error('Error en el servicio:', error);
+
+    return throwError(() => error);
+
+  }
+
 }
