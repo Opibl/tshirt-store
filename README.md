@@ -1,108 +1,133 @@
-Tshirt Store – Ecommerce de Poleras de Programación
+# Tshirt Store – Ecommerce de Poleras de Programación
 
-Descripción
+## Descripción
 
-Tshirt Store es una aplicación de ecommerce desarrollada para la venta de poleras inspiradas en lenguajes de programación. El frontend fue construido con Angular y el backend con Node.js y Express.
+**Tshirt Store** es una aplicación de ecommerce desarrollada para la venta de poleras inspiradas en lenguajes de programación.
 
-El sistema permite visualizar productos almacenados en Firebase Firestore, realizar pagos seguros mediante Stripe Checkout y enviar correos electrónicos automáticos utilizando Resend cuando una compra es completada exitosamente mediante Stripe Webhooks.
+El sistema utiliza una arquitectura moderna con:
 
-Arquitectura
+- **Frontend:** Angular
+- **Backend:** Node.js + Express
+- **Base de datos:** Firebase Firestore
+- **Pagos:** Stripe Checkout
+- **Emails:** Resend API
+- **Webhooks:** Stripe Webhooks para confirmación automática de pagos
 
-Frontend
+Cuando una compra se completa exitosamente, el sistema envía automáticamente:
 
-Angular
+- Email al administrador
+- Email de confirmación al cliente
 
-Consume API REST del backend
+---
 
-Redirige a Stripe Checkout
+## Arquitectura
 
-Backend
+### Frontend
 
-Node.js
+- Angular
+- Consume API REST del backend
+- Muestra productos desde Firebase
+- Redirige a Stripe Checkout para pagos
 
-Express
+### Backend
 
-Firebase Firestore (productos)
+- Node.js
+- Express
+- Firebase Firestore (productos)
+- Stripe API (procesamiento de pagos)
+- Stripe Webhooks (confirmación de pagos)
+- Resend API (envío de correos)
 
-Stripe API (pagos)
+---
 
-Stripe Webhooks (confirmación de pagos)
+## Servicios externos
 
-Resend API (envío de emails)
+- **Stripe** → Procesamiento de pagos
+- **Firebase Firestore** → Base de datos de productos
+- **Resend** → Envío de emails automáticos
 
-Servicios externos
+---
 
-Stripe para procesamiento de pagos
+## Funcionalidades principales
 
-Firebase Firestore como base de datos de productos
+- Obtener productos desde Firebase Firestore
+- Crear sesiones de pago con Stripe Checkout
+- Calcular costos de envío automáticamente
+- Procesar eventos `checkout.session.completed` mediante Stripe Webhook
+- Enviar email al administrador con detalles de la compra
+- Enviar email de confirmación al cliente
+- Manejo seguro de variables de entorno
 
-Resend para envío de correos electrónicos
+---
 
-Funcionalidades principales
+## Estructura del proyecto
 
-Obtener productos desde Firebase Firestore
-
-Crear sesiones de pago con Stripe Checkout
-
-Calcular costo de envío automáticamente
-
-Procesar eventos checkout.session.completed mediante Stripe Webhook
-
-Enviar email al administrador con detalles de la compra
-
-Enviar email de confirmación al cliente
-
-Manejo seguro de variables de entorno
-
-Estructura del proyecto
 
 tshirt-store/
+│
+├── frontend/ # Aplicación Angular
+│
+├── backend/ # Servidor Express
+│ ├── server.js
+│ ├── routes/
+│ ├── services/
+│ └── webhook/
+│
+└── README.md
 
-frontend/
-Aplicación Angular
 
-backend/
-Servidor Express
-Integración con Stripe
-Integración con Firebase
-Webhook de Stripe
-Integración con Resend
+---
 
-Endpoints del backend
+## 🔌 Endpoints del Backend
 
-GET /productos
+### Obtener productos
 
-Obtiene la lista de productos desde Firebase Firestore
+**GET** `/productos`
+
+Obtiene la lista de productos desde Firebase Firestore.
+
+**Respuesta:**
+
+```json
+[
+  {
+    "nombre": "Polera React",
+    "precio": 15000,
+    "imagen": "url_imagen"
+  }
+]
+Crear sesión de pago
 
 POST /create-checkout-session
 
-Crea una sesión de pago en Stripe Checkout
+Crea una sesión de pago en Stripe Checkout.
 
-Body esperado:
+Body:
 
 {
-"productos": [
-{
-"nombre": "Polera Angular",
-"precio": 15000,
-"cantidad": 1,
-"talla": "M"
-}
-]
+  "productos": [
+    {
+      "nombre": "Polera Angular",
+      "precio": 15000,
+      "cantidad": 1,
+      "talla": "M"
+    }
+  ]
 }
 
 Respuesta:
 
 {
-"id": "session_id",
-"url": "stripe_checkout_url"
+  "id": "session_id",
+  "url": "stripe_checkout_url"
 }
+Webhook de Stripe
 
 POST /stripe-webhook
 
-Endpoint que recibe eventos desde Stripe
+Endpoint que recibe eventos desde Stripe.
 
-Procesa el evento:
+Evento procesado:
 
 checkout.session.completed
 
@@ -120,43 +145,50 @@ Envía email de confirmación al cliente
 
 Variables de entorno requeridas
 
+Crear un archivo .env en el backend:
+
+PORT=3000
+
+# Stripe
 STRIPE_SECRET_KEY=your_stripe_secret_key
 STRIPE_WEBHOOK_SECRET=your_webhook_secret
 
+# Resend
 RESEND_API_KEY=your_resend_api_key
 EMAIL_TO=admin@email.com
 
+# Firebase
 FIREBASE_API_KEY=your_firebase_key
 FIREBASE_AUTH_DOMAIN=your_domain
 FIREBASE_PROJECT_ID=your_project
 FIREBASE_STORAGE_BUCKET=your_bucket
 FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 FIREBASE_APP_ID=your_app_id
-
-PORT=3000
-
 Instalación
+1. Clonar repositorio
+git clone https://github.com/tuusuario/tshirt-store.git
 
-Instalar dependencias
-
+cd tshirt-store/backend
+2. Instalar dependencias
 npm install
+3. Ejecutar servidor
 
-Ejecutar servidor
+Modo desarrollo:
 
 npm run dev
 
-o
+Modo normal:
 
 node server.js
 
 Servidor disponible en:
 
 http://localhost:3000
-
 Stripe Webhook en desarrollo
 
-stripe listen --forward-to localhost:3000/stripe-webhook
+Instalar Stripe CLI y ejecutar:
 
+stripe listen --forward-to localhost:3000/stripe-webhook
 Flujo de pago
 
 Usuario selecciona productos en Angular
@@ -182,23 +214,24 @@ productos
 Ejemplo de documento:
 
 {
-nombre: "Polera React",
-precio: 15000,
-imagen: "url_imagen"
+  "nombre": "Polera React",
+  "precio": 15000,
+  "imagen": "url_imagen"
 }
-
 Seguridad
 
 Validación de firma del webhook de Stripe
 
 Uso de variables de entorno para claves privadas
 
-No exposición de claves en el frontend
+No exposición de claves sensibles en el frontend
+
+Backend seguro y desacoplado
 
 Autor
 
 Pedro Basualto
 
-Licencia
+📄 Licencia
 
-MIT
+MIT License
