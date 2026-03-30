@@ -61,29 +61,6 @@ html {
   height: 55px;
 }
 
-/* =====================
-   NAVEGACIÓN
-===================== */
-.navegacion {
-  width: 100%;
-  background-color: $primarioOscuro;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  text-transform: uppercase;
-}
-
-.navegacion__enlace {
-  color: $blanco;
-  text-decoration: none;
-  padding: 1rem;
-  font-size: 1.8rem;
-}
-
-.navegacion__enlace:hover,
-.navegacion__enlace--activo {
-  color: $secundario;
-}
 
 /* =====================
    CUERPO CARRITO

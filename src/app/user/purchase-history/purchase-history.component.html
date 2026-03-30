@@ -1,0 +1,29 @@
+<div class="history-container">
+
+    <h1>🛍️ Historial de compras</h1>
+
+    <p *ngIf="cargando">
+        Cargando compras...
+    </p>
+
+    <p *ngIf="!cargando && compras.length === 0">
+        No tienes compras registradas.
+    </p>
+
+    <div *ngFor="let compra of compras" class="purchase-card">
+
+        <h3>Pedido #{{ compra.sessionId }}</h3>
+
+        <p><strong>Total:</strong> ${{ compra.total }} CLP</p>
+        <p><strong>Estado:</strong> {{ compra.estado }}</p>
+
+        <div *ngFor="let producto of compra.productos">
+            <p>
+                {{ producto.nombre }}
+                - x{{ producto.cantidad }}
+                - ${{ producto.total }}
+            </p>
+        </div>
+
+    </div>
+</div>

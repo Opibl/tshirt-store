@@ -2,7 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+  serverTimestamp
+} from 'firebase/firestore/lite';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
 
@@ -324,6 +331,37 @@ server.post('/stripe-webhook', async (req, res) => {
 
       console.log("📧 Email cliente:", email);
 
+      /* =========================
+        GUARDAR COMPRA EN FIRESTORE
+      ========================= */
+
+      await setDoc(doc(db, 'compras', session.id), {
+        sessionId: session.id,
+        paymentIntent: session.payment_intent,
+
+        nombre,
+        email: email?.toLowerCase() || null,
+
+        direccion,
+        ciudad,
+        region,
+        postal,
+
+        total: monto,
+
+        estado: 'completado',
+
+        productos: lineItems.data.map(item => ({
+          nombre: item.description,
+          cantidad: item.quantity,
+          total: item.amount_total
+        })),
+
+        fecha: serverTimestamp()
+      });
+
+      console.log("✅ Compra guardada en Firestore");
+
 
       /* =========================
          EMAIL ADMIN
@@ -447,6 +485,8 @@ server.post('/stripe-webhook', async (req, res) => {
   res.status(200).json({ received: true });
 
 });
+
+
 
 /* =========================
    START SERVER

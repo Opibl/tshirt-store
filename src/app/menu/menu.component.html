@@ -1,0 +1,78 @@
+<header class="header">
+    <a routerLink="/">
+        <img class="header__logo" src="/assets/img/logo.png" alt="Logotipo">
+    </a>
+
+    <button class="menu-toggle" (click)="menuAbierto = !menuAbierto">
+        <i class="bi bi-list"></i>
+    </button>
+</header>
+
+<div
+    class="overlay"
+    *ngIf="menuAbierto"
+    (click)="menuAbierto = false">
+</div>
+
+<section class="hero-nav">
+    <nav class="navegacion" [class.abierto]="menuAbierto">
+
+        <!-- TIENDA -->
+        <a class="navegacion__enlace" routerLink="/" (click)="menuAbierto = false">
+            <i class="bi bi-house-door-fill"></i>
+            <span>Tienda</span>
+        </a>
+
+        <!-- CARRITO -->
+        <a class="navegacion__enlace" routerLink="/carrito" (click)="menuAbierto = false">
+            <i class="bi bi-cart-fill"></i>
+            <span>Carrito</span>
+        </a>
+
+        <!-- NO LOGUEADO -->
+        <a
+            *ngIf="!usuarioLogueado"
+            class="navegacion__enlace"
+            routerLink="/login"
+            (click)="menuAbierto = false">
+            <i class="bi bi-box-arrow-in-right"></i>
+            <span>Iniciar sesión</span>
+        </a>
+
+        <a
+            *ngIf="!usuarioLogueado"
+            class="navegacion__enlace"
+            routerLink="/register"
+            (click)="menuAbierto = false">
+            <i class="bi bi-person-plus-fill"></i>
+            <span>Registrarme</span>
+        </a>
+
+        <!-- LOGUEADO -->
+        <a
+            *ngIf="usuarioLogueado"
+            class="navegacion__enlace"
+            routerLink="/history"
+            (click)="menuAbierto = false">
+
+            <i class="bi bi-clock-history"></i>
+            <span>Mis compras</span>
+
+        </a>
+
+        <a
+            *ngIf="usuarioLogueado"
+            class="navegacion__enlace"
+            (click)="cerrarSesion()">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Cerrar sesión</span>
+        </a>
+
+        <!-- NOSOTROS -->
+        <a class="navegacion__enlace" routerLink="/nosotros" (click)="menuAbierto = false">
+            <i class="bi bi-info-circle-fill"></i>
+            <span>Nosotros</span>
+        </a>
+
+    </nav>
+</section>

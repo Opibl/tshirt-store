@@ -1,0 +1,138 @@
+@import "bootstrap-icons/font/bootstrap-icons.css";
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+    position: relative;
+}
+
+.header__logo {
+    width: 180px;
+    max-width: 100%;
+}
+
+/* BOTÓN HAMBURGUESA */
+.menu-toggle {
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+/* HERO NAV */
+.hero-nav {
+    background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+    padding: 1.5rem 0 3rem;
+}
+
+/* NAV DESKTOP */
+.navegacion {
+    width: fit-content;
+    margin: auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background: rgba(61, 0, 102, 0.9);
+    border-radius: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    transition: 0.3s ease;
+}
+
+.navegacion__enlace {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.8rem 1.2rem;
+    border-radius: 14px;
+    transition: all 0.3s ease;
+}
+
+/* HOVER AMARILLO */
+.navegacion__enlace:hover {
+    background: #ffd600;
+    color: #3d0066;
+    box-shadow: 0 0 12px rgba(255, 214, 0, 0.45);
+    transform: translateY(-2px);
+}
+
+/* ICONO */
+.navegacion__enlace i {
+    transition: 0.3s ease;
+}
+
+.navegacion__enlace:hover i {
+    color: #3d0066;
+}
+
+.navegacion__enlace--activo {
+    border: 2px solid #ffd600;
+}
+
+/* OVERLAY */
+.overlay {
+    display: none;
+}
+
+/* MÓVIL */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        left: 20px;
+        right: auto;
+    }
+
+    .hero-nav {
+        padding: 0;
+    }
+
+    .overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 998;
+    }
+
+    .navegacion {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 220px; /* MÁS DELGADO */
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 5rem 1rem 2rem; /* MENOS ANCHO INTERNO */
+        border-radius: 0;
+        background: #5b1480;
+        transition: 0.3s ease;
+        z-index: 999;
+        box-shadow: 10px 0 20px rgba(0,0,0,0.35);
+    }
+
+    .navegacion.abierto {
+        left: 0;
+    }
+
+    .navegacion__enlace {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.06);
+        box-sizing: border-box;
+    }
+}

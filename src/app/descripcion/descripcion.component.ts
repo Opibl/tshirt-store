@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { loadStripe } from '@stripe/stripe-js';
 
 import { ServicoService } from '../servico.service';
 import { CARRITOService } from '../carrito.service';
@@ -50,8 +49,8 @@ export class DescripcionComponent implements OnInit {
     }
 
     // Obtener producto desde el servicio
-    this.servicio.obtenerDatos().subscribe(
-      (datos: any[]) => {
+    this.servicio.obtenerDatos().subscribe({
+      next: (datos: any[]) => {
         const producto = datos.find(item => item.id == this.id);
 
         if (!producto) {
@@ -61,19 +60,21 @@ export class DescripcionComponent implements OnInit {
 
         this.nombre = producto.nombre;
         this.descripcion = producto.descripcion;
-        this.precio = producto.precio;
+        this.precio = Number(producto.precio);
 
-        // Guardar para Stripe
         this.productos = [producto];
       },
-      error => {
+
+      error: (error) => {
         console.error('Error al obtener producto:', error);
       }
-    );
+    });
   }
 
   // 🛒 AGREGAR AL CARRITO
-  addToCart() {
+  addToCart(): void {
+
+    console.log('CLICK addToCart');
 
     if (!this.tallaSeleccionada) {
       Swal.fire('Selecciona una talla', '', 'warning');
@@ -94,6 +95,8 @@ export class DescripcionComponent implements OnInit {
 
     this.carrito.Agregar(productoCarrito);
 
+    console.log('Producto agregado:', productoCarrito);
+
     Swal.fire({
       title: 'Producto agregado',
       text: `${this.nombre} - Talla ${this.tallaSeleccionada} (x${this.cantidadSeleccionada})`,
@@ -102,8 +105,8 @@ export class DescripcionComponent implements OnInit {
     });
   }
 
-  // 💳 COMPRAR AHORA (STRIPE)
-  comprarAhora() {
+  // 💳 COMPRAR AHORA (STRIPE CORREGIDO)
+  comprarAhora(): void {
 
     if (!this.tallaSeleccionada) {
       Swal.fire('Selecciona una talla', '', 'warning');
@@ -122,20 +125,33 @@ export class DescripcionComponent implements OnInit {
       cantidad: this.cantidadSeleccionada
     }];
 
-    this.servicio.stripe(productosCheckout).subscribe(async (response: any) => {
+    console.log('Enviando a Stripe:', productosCheckout);
 
-      const stripe = await loadStripe(
-        'pk_test_51QB27JLN0Hr2xNnZ4HgbiEBQMEXwZbTiRL3uf5nUwNzj85O2ZG2p0Zw8qKwg9cbcvbXrVgKRj93CfQs5mnXjdbLv007JzJB6HW'
-      );
+    this.servicio.stripe(productosCheckout).subscribe({
+      next: (response: any) => {
 
-      if (stripe && response.id) {
-        const { error } = await stripe.redirectToCheckout({
-          sessionId: response.id
-        });
+        console.log('Respuesta Stripe:', response);
 
-        if (error) {
-          console.error('Error al redirigir a Stripe:', error);
+        if (response.url) {
+          window.location.href = response.url;
+        } else {
+          console.error('Stripe no devolvió URL');
+          Swal.fire(
+            'Error',
+            'No se pudo iniciar el pago',
+            'error'
+          );
         }
+      },
+
+      error: (error) => {
+        console.error('Error Stripe:', error);
+
+        Swal.fire(
+          'Error',
+          'Hubo un problema al conectar con Stripe',
+          'error'
+        );
       }
     });
   }

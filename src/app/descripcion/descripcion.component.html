@@ -1,76 +1,77 @@
 <section class="body">
-    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
 
-    <!-- HEADER SIMPLE (COMO ANTES) -->
-    <header class="header">
-        <a href="">
-            <img class="header__logo" src="/assets/img/logo.png" alt="Logotipo">
-        </a>
-    </header>
+  <div class="cuerpo">
 
-    <!-- NAVEGACIÓN DEBAJO -->
-    <nav class="navegacion">
-        <a class="navegacion__enlace navegacion__enlace--activo" href="">Tienda</a>
-        <a class="navegacion__enlace" href="/nosotros">Nosotros</a>
-        <a class="navegacion__enlace" href="/carrito">Carrito</a>
-    </nav>
+    <!-- IMAGEN + OPCIONES -->
+    <div class="imagen">
+      <img [src]="'/assets/img/' + id + '.jpg'" alt="imagen" class="foto">
 
-    <!-- CONTENIDO -->
-    <div class="cuerpo"> 
-        <div class="imagen">
-            <img src="/assets/img/{{ id }}.jpg" alt="imagen" class="foto">
-            <div class="precio">{{ precio }} CLP</div>
+      <div class="precio">
+        {{ precio }} CLP
+      </div>
 
-            <div class="selector-talla">
+      <div class="selector-talla">
 
-                <p class="label-talla">TALLA</p>
+        <p class="label-talla">TALLA</p>
 
-                <div class="tallas">
-                    <button
-                        *ngFor="let talla of tallas"
-                        type="button"
-                        class="talla-btn"
-                        [class.activa]="tallaSeleccionada === talla"
-                        (click)="tallaSeleccionada = talla">
-                        {{ talla }}
-                    </button>
-                </div>
+        <div class="tallas">
+          <button
+            *ngFor="let talla of tallas"
+            type="button"
+            class="talla-btn"
+            [class.activa]="tallaSeleccionada === talla"
+            (click)="tallaSeleccionada = talla">
 
-                <!-- MENSAJE TALLA SELECCIONADA -->
-                <p class="talla-elegida" *ngIf="tallaSeleccionada">
-                    Talla seleccionada: <strong>{{ tallaSeleccionada }}</strong>
-                </p>
+            {{ talla }}
 
-                <!-- CANTIDAD -->
-                <div class="cantidad">
-                    <label>Cantidad</label>
-                    <input
-                        type="number"
-                        min="1"
-                        [(ngModel)]="cantidadSeleccionada">
-                </div>
-
-            </div>
+          </button>
         </div>
 
-        <div class="descripcion">
-            <p>{{ descripcion }}</p>
+        <p class="talla-elegida" *ngIf="tallaSeleccionada">
+          Talla seleccionada:
+          <strong>{{ tallaSeleccionada }}</strong>
+        </p>
 
-            <div class="contenedor-botones">
-                <button
-                    class="boton agregar-carrito"
-                    [disabled]="!tallaSeleccionada"
-                    (click)="addToCart()">
-                    Agregar al carrito
-                </button>
+        <div class="cantidad">
+          <label for="cantidad">Cantidad</label>
 
-                <button
-                    class="boton comprar-ahora"
-                    [disabled]="!tallaSeleccionada"
-                    (click)="comprarAhora()">
-                    Comprar ahora
-                </button>
-            </div>
+          <input
+            id="cantidad"
+            type="number"
+            min="1"
+            [(ngModel)]="cantidadSeleccionada">
         </div>
+
+      </div>
     </div>
+
+    <!-- DESCRIPCIÓN -->
+    <div class="descripcion">
+
+      <p>{{ descripcion }}</p>
+
+      <div class="contenedor-botones">
+
+        <button
+          class="boton agregar-carrito"
+          [disabled]="!tallaSeleccionada"
+          (click)="addToCart()">
+
+          Agregar al carrito
+
+        </button>
+
+        <button
+          class="boton comprar-ahora"
+          [disabled]="!tallaSeleccionada"
+          (click)="comprarAhora()">
+
+          Comprar ahora
+
+        </button>
+
+      </div>
+    </div>
+  </div>
 </section>
