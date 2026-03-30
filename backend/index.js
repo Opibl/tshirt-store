@@ -9,7 +9,7 @@ import {
   doc,
   setDoc,
   serverTimestamp
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
 
@@ -335,7 +335,11 @@ server.post('/stripe-webhook', async (req, res) => {
         GUARDAR COMPRA EN FIRESTORE
       ========================= */
 
-      await setDoc(doc(db, 'compras', session.id), {
+      console.log("💾 Intentando guardar compra...");
+
+      const compraRef = doc(db, 'compras', session.id);
+
+      const compraData = {
         sessionId: session.id,
         paymentIntent: session.payment_intent,
 
@@ -347,18 +351,22 @@ server.post('/stripe-webhook', async (req, res) => {
         region,
         postal,
 
-        total: monto,
+        total: Number(monto),
 
         estado: 'completado',
 
         productos: lineItems.data.map(item => ({
           nombre: item.description,
-          cantidad: item.quantity,
-          total: item.amount_total
+          cantidad: Number(item.quantity),
+          total: Number(item.amount_total)
         })),
 
         fecha: serverTimestamp()
-      });
+      };
+
+      console.log("📦 Datos a guardar:", compraData);
+
+      await setDoc(compraRef, compraData);
 
       console.log("✅ Compra guardada en Firestore");
 
@@ -476,7 +484,9 @@ server.post('/stripe-webhook', async (req, res) => {
 
     } catch (error) {
 
-      console.log("❌ Error procesando webhook:", error);
+      console.error("❌ Error procesando webhook:");
+      console.error(error.message);
+      console.error(error.stack);
 
     }
 
