@@ -1,11 +1,14 @@
 <div class="body">
+
     <!-- LOGIN -->
     <div class="login-container">
         <div class="login-card">
+
             <h2>Iniciar Sesión</h2>
             <p>Accede a tu cuenta para ver tus compras y pedidos</p>
 
             <form (ngSubmit)="login()">
+
                 <div class="form-group">
                     <label for="email">Correo electrónico</label>
                     <input
@@ -30,23 +33,34 @@
                     >
                 </div>
 
-                <button type="submit" class="btn-login">
-                    Ingresar
+                <button
+                    type="submit"
+                    class="btn-login"
+                    [disabled]="cargando">
+
+                    <span *ngIf="cargando" class="spinner"></span>
+                    {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+
                 </button>
+
             </form>
 
             <button
                 type="button"
                 class="btn-google"
-                (click)="loginConGoogle()">
+                (click)="loginConGoogle()"
+                [disabled]="cargando">
+
+                <span *ngIf="cargando" class="spinner"></span>
 
                 <img
+                    *ngIf="!cargando"
                     src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                     alt="Google"
                     class="google-logo"
                 >
 
-                Ingresar con Google
+                {{ cargando ? 'Abriendo Google...' : 'Ingresar con Google' }}
 
             </button>
 
@@ -54,6 +68,7 @@
                 ¿No tienes cuenta?
                 <a routerLink="/register">Regístrate aquí</a>
             </p>
+
         </div>
     </div>
 

@@ -94,7 +94,7 @@ h3 {
 .buscador {
     width: 100%;
     max-width: 40rem;
-    margin: 3rem auto;
+    margin: 3rem auto 2rem;
     display: block;
     padding: 1.2rem 1.6rem;
     font-size: 1.6rem;
@@ -109,6 +109,84 @@ h3 {
     color: rgba(255, 255, 255, .6);
 }
 
+/* FILTROS */
+/* FILTROS */
+.filtros {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.filtros select {
+    appearance: none;
+    min-width: 18rem;
+    max-width: 22rem;
+    width: 100%;
+
+    padding: 0.8rem 2.6rem 0.8rem 1rem;
+    font-size: 1.2rem;
+    line-height: 1.2;
+
+    border: none;
+    border-radius: 1rem;
+    background: $blanco;
+    color: $negro;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: .3s ease;
+
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 20 20' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1.4rem;
+}
+
+.filtros select:hover {
+    box-shadow: 0 0 0 3px rgba(255, 206, 0, .35);
+}
+
+/* TABLET */
+@media (max-width: 992px) {
+    .filtros {
+        gap: 0.8rem;
+    }
+
+    .filtros select {
+        min-width: 16rem;
+        max-width: 20rem;
+        font-size: 1.1rem;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .filtros {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .filtros select {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+        font-size: 1.1rem;
+    }
+}
+
+/* MOBILE SMALL */
+@media (max-width: 480px) {
+    .filtros select {
+        padding: 0.7rem 2.4rem 0.7rem 0.9rem;
+        font-size: 1rem;
+        border-radius: 0.8rem;
+    }
+}
 /* GRID */
 .grid {
     display: grid;
@@ -117,12 +195,12 @@ h3 {
 }
 
 .contador {
-  width: 100%;
-  text-align: center;
-  font-size: 2rem;
-  color: white;
-  margin: 2rem 0;
-  font-weight: 500;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    color: white;
+    margin: 2rem 0;
+    font-weight: 500;
 }
 
 @media (min-width: 768px) {
@@ -169,4 +247,25 @@ h3 {
     font-family: $fuentePrincipal;
     text-align: center;
     font-size: 2.2rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 3rem;
+    }
+
+    .filtros {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .filtros select {
+        width: 100%;
+        max-width: 40rem;
+    }
+
+    .contador {
+        font-size: 1.6rem;
+    }
 }

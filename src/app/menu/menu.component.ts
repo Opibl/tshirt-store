@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { Auth, onAuthStateChanged, signOut } from '@angular/fire/auth';
@@ -15,10 +15,14 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   usuarioLogueado: boolean = false;
   menuAbierto: boolean = false;
+  cerrandoSesion: boolean = false;
 
   private unsubscribeAuth: (() => void) | null = null;
 
-  constructor(private auth: Auth) {}
+  constructor(
+    private auth: Auth,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.verificarSesion();
@@ -36,6 +40,8 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   async cerrarSesion(): Promise<void> {
     try {
+      this.cerrandoSesion = true;
+
       await signOut(this.auth);
 
       localStorage.removeItem('usuario');
@@ -43,14 +49,16 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.usuarioLogueado = false;
       this.menuAbierto = false;
 
+      await this.router.navigate(['/']);
+
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
+    } finally {
+      this.cerrandoSesion = false;
     }
   }
 
   ngOnDestroy(): void {
-    if (this.unsubscribeAuth) {
-      this.unsubscribeAuth();
-    }
+    this.unsubscribeAuth?.();
   }
 }

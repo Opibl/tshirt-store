@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { Auth, signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider } from '@angular/fire/auth';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, CommonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -79,8 +80,12 @@ export class LoginComponent {
   }
 
   async loginConGoogle(): Promise<void> {
-    try {
 
+    if (this.cargando) return;
+
+    this.cargando = true;
+
+    try {
       const provider = new GoogleAuthProvider();
 
       const resultado = await signInWithPopup(
@@ -88,20 +93,24 @@ export class LoginComponent {
         provider
       );
 
-      console.log('Google login:', resultado.user);
+      console.log('✅ Google login:', resultado.user);
 
       localStorage.setItem(
         'usuario',
         resultado.user.email || ''
       );
 
-      alert('Inicio con Google exitoso');
+      await this.router.navigate(['/']);
 
-      this.router.navigate(['/']);
+    } catch (error: any) {
+      console.error('❌ Error Google:', error);
 
-    } catch (error) {
-      console.error('Error Google:', error);
-      alert('No se pudo iniciar con Google');
+      if (error.code !== 'auth/popup-closed-by-user') {
+        alert('No se pudo iniciar con Google');
+      }
+
+    } finally {
+      this.cargando = false;
     }
   }
 }

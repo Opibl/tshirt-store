@@ -20,12 +20,12 @@ export const appConfig: ApplicationConfig = {
 
     provideFirebaseApp(() =>
       initializeApp({
-        apiKey: "AIzaSyAkI8E7sZ2H_PrpF2AcVdPEZOjswMTbBpU",
-        authDomain: "backend-shop-c8558.firebaseapp.com",
-        projectId: "backend-shop-c8558",
-        storageBucket: "backend-shop-c8558.firebasestorage.app",
-        messagingSenderId: "560913379940",
-        appId: "1:560913379940:web:ed46c8cd8e59b9e4da2571"
+        apiKey: "AIzaSyAudhq50pgSGvcTENZIiSWlCAdU15QSsRQ",
+        authDomain: "store-2f422.firebaseapp.com",
+        projectId: "store-2f422",
+        storageBucket: "store-2f422.firebasestorage.app",
+        messagingSenderId: "916120446484",
+        appId: "1:916120446484:web:b3d05b6f9ec54e3d13e901"
       })
     ),
 
