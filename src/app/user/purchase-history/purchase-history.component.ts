@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+import { Auth, onAuthStateChanged, Unsubscribe } from '@angular/fire/auth';
 import {
   Firestore,
   collection,
@@ -10,6 +10,8 @@ import {
   where
 } from '@angular/fire/firestore';
 
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-purchase-history',
   standalone: true,
@@ -17,10 +19,13 @@ import {
   templateUrl: './purchase-history.component.html',
   styleUrls: ['./purchase-history.component.scss']
 })
-export class PurchaseHistoryComponent implements OnInit {
+export class PurchaseHistoryComponent implements OnInit, OnDestroy {
 
   compras: any[] = [];
   cargando = true;
+
+  private authUnsubscribe?: Unsubscribe;
+  private comprasSubscription?: Subscription;
 
   constructor(
     private auth: Auth,
@@ -31,36 +36,62 @@ export class PurchaseHistoryComponent implements OnInit {
     this.obtenerCompras();
   }
 
+  ngOnDestroy(): void {
+    this.authUnsubscribe?.();
+    this.comprasSubscription?.unsubscribe();
+  }
+
   obtenerCompras(): void {
-    onAuthStateChanged(this.auth, (usuario) => {
+    console.log('🔍 Esperando usuario...');
 
-      console.log('Usuario autenticado:', usuario);
+    this.authUnsubscribe = onAuthStateChanged(this.auth, (usuario) => {
+      console.log('👤 Usuario autenticado:', usuario);
 
-      if (!usuario?.email) {
+      if (!usuario) {
+        console.log('⏳ Esperando restauración de sesión...');
+        return;
+      }
+
+      const emailBuscado = usuario.email?.toLowerCase();
+
+      console.log('📧 Email actual:', emailBuscado);
+      console.log('🆔 UID actual:', usuario.uid);
+
+      if (!emailBuscado) {
+        console.warn('❌ Usuario sin email');
         this.cargando = false;
         return;
       }
 
+      console.log('🔎 Buscando compras para:', emailBuscado);
+
       const comprasRef = collection(this.firestore, 'compras');
 
-      const q = query(
+      const comprasQuery = query(
         comprasRef,
-        where('email', '==', usuario.email.toLowerCase())
+        where('email', '==', emailBuscado)
       );
 
-      collectionData(q, { idField: 'id' }).subscribe({
+      this.comprasSubscription?.unsubscribe();
+
+      this.comprasSubscription = collectionData(comprasQuery, {
+        idField: 'id'
+      }).subscribe({
         next: (data) => {
-          console.log('Compras encontradas:', data);
+          console.log('✅ Compras encontradas:', data);
+          console.log('📦 Cantidad:', data.length);
 
           this.compras = data;
           this.cargando = false;
         },
         error: (error) => {
-          console.error('Error obteniendo compras:', error);
+          console.error('❌ Error Firestore:', error);
+          console.error('📝 Mensaje:', error.message);
+
+          this.compras = [];
           this.cargando = false;
         }
       });
-
     });
   }
 }
