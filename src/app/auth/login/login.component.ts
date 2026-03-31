@@ -1,15 +1,10 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
-import {
-  Auth,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-  setPersistence,
-  browserLocalPersistence
-} from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider } from '@angular/fire/auth';
+
 
 @Component({
   selector: 'app-login',
@@ -39,11 +34,6 @@ export class LoginComponent {
     this.cargando = true;
 
     try {
-      // 🔥 mantener sesión después de refresh
-      await setPersistence(
-        this.auth,
-        browserLocalPersistence
-      );
 
       const credenciales = await signInWithEmailAndPassword(
         this.auth,
@@ -51,7 +41,7 @@ export class LoginComponent {
         this.password
       );
 
-      console.log('✅ Login exitoso:', credenciales.user);
+      console.log('Login exitoso:', credenciales.user);
 
       localStorage.setItem(
         'usuario',
@@ -63,7 +53,8 @@ export class LoginComponent {
       this.router.navigate(['/']);
 
     } catch (error: any) {
-      console.error('❌ Error login:', error);
+
+      console.error('Error login:', error);
 
       switch (error.code) {
         case 'auth/user-not-found':
@@ -88,14 +79,7 @@ export class LoginComponent {
   }
 
   async loginConGoogle(): Promise<void> {
-    this.cargando = true;
-
     try {
-      // 🔥 guardar sesión en navegador
-      await setPersistence(
-        this.auth,
-        browserLocalPersistence
-      );
 
       const provider = new GoogleAuthProvider();
 
@@ -104,7 +88,7 @@ export class LoginComponent {
         provider
       );
 
-      console.log('✅ Google login:', resultado.user);
+      console.log('Google login:', resultado.user);
 
       localStorage.setItem(
         'usuario',
@@ -116,11 +100,8 @@ export class LoginComponent {
       this.router.navigate(['/']);
 
     } catch (error) {
-      console.error('❌ Error Google:', error);
+      console.error('Error Google:', error);
       alert('No se pudo iniciar con Google');
-
-    } finally {
-      this.cargando = false;
     }
   }
 }
