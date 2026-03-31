@@ -1,29 +1,51 @@
 <div class="history-container">
 
-    <h1>🛍️ Historial de compras</h1>
+  <h1>🛍️ Historial de compras</h1>
 
-    <p *ngIf="cargando">
-        Cargando compras...
-    </p>
+  <!-- Estado de carga -->
+  <div *ngIf="cargando" class="loading">
+    <p>Cargando compras...</p>
+  </div>
 
-    <p *ngIf="!cargando && compras.length === 0">
-        No tienes compras registradas.
-    </p>
+  <!-- Sin compras -->
+  <div *ngIf="!cargando && compras.length === 0" class="empty-state">
+    <p>No tienes compras registradas.</p>
+  </div>
 
+  <!-- Lista de compras -->
+  <div *ngIf="!cargando && compras.length > 0">
     <div *ngFor="let compra of compras" class="purchase-card">
 
-        <h3>Pedido #{{ compra.sessionId }}</h3>
+      <h3>Pedido #{{ compra.sessionId }}</h3>
 
-        <p><strong>Total:</strong> ${{ compra.total }} CLP</p>
-        <p><strong>Estado:</strong> {{ compra.estado }}</p>
+      <p>
+        <strong>Total:</strong>
+        ${{ compra.total | number }} CLP
+      </p>
 
-        <div *ngFor="let producto of compra.productos">
-            <p>
-                {{ producto.nombre }}
-                - x{{ producto.cantidad }}
-                - ${{ producto.total }}
-            </p>
+      <p>
+        <strong>Estado:</strong>
+        {{ compra.estado }}
+      </p>
+
+      <p *ngIf="compra.fecha">
+        <strong>Fecha:</strong>
+        {{ compra.fecha.seconds * 1000 | date:'dd/MM/yyyy HH:mm' }}
+      </p>
+
+      <hr>
+
+      <div class="productos">
+        <div *ngFor="let producto of compra.productos" class="producto-item">
+          <p>
+            {{ producto.nombre }}
+            - x{{ producto.cantidad }}
+            - ${{ producto.total | number }}
+          </p>
         </div>
+      </div>
 
     </div>
+  </div>
+
 </div>

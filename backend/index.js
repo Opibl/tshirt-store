@@ -361,7 +361,7 @@ server.post('/stripe-webhook', async (req, res) => {
           total: Number(item.amount_total)
         })),
 
-        fecha: serverTimestamp()
+        fecha: new Date()
       };
 
       console.log("📦 Datos a guardar:", compraData);
@@ -494,6 +494,22 @@ server.post('/stripe-webhook', async (req, res) => {
 
   res.status(200).json({ received: true });
 
+});
+
+server.get('/compras', async (req, res) => {
+  try {
+    const snapshot = await getDocs(collection(db, 'compras'));
+
+    const compras = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    res.json(compras);
+  } catch (error) {
+    console.error("Error obteniendo compras:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 

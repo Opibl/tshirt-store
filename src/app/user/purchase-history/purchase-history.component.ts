@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Auth } from '@angular/fire/auth';
+import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import {
   Firestore,
   collection,
@@ -20,7 +20,7 @@ import {
 export class PurchaseHistoryComponent implements OnInit {
 
   compras: any[] = [];
-  cargando: boolean = true;
+  cargando = true;
 
   constructor(
     private auth: Auth,
@@ -32,33 +32,35 @@ export class PurchaseHistoryComponent implements OnInit {
   }
 
   obtenerCompras(): void {
+    onAuthStateChanged(this.auth, (usuario) => {
 
-    const usuario = this.auth.currentUser;
+      console.log('Usuario autenticado:', usuario);
 
-    if (!usuario?.email) {
-      this.cargando = false;
-      return;
-    }
-
-    const comprasRef = collection(this.firestore, 'compras');
-
-    const q = query(
-      comprasRef,
-      where('email', '==', usuario.email.toLowerCase())
-    );
-
-    collectionData(q, { idField: 'id' }).subscribe({
-      next: (data) => {
-        this.compras = data;
+      if (!usuario?.email) {
         this.cargando = false;
-
-        console.log('Compras:', data);
-      },
-
-      error: (error) => {
-        console.error('Error obteniendo compras:', error);
-        this.cargando = false;
+        return;
       }
+
+      const comprasRef = collection(this.firestore, 'compras');
+
+      const q = query(
+        comprasRef,
+        where('email', '==', usuario.email.toLowerCase())
+      );
+
+      collectionData(q, { idField: 'id' }).subscribe({
+        next: (data) => {
+          console.log('Compras encontradas:', data);
+
+          this.compras = data;
+          this.cargando = false;
+        },
+        error: (error) => {
+          console.error('Error obteniendo compras:', error);
+          this.cargando = false;
+        }
+      });
+
     });
   }
 }
