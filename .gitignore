@@ -44,3 +44,6 @@ Thumbs.db
 .env
 .vercel
 .env*.local
+
+# Claude Code local tooling (dev-server preview config)
+.claude/
