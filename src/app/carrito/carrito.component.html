@@ -1,70 +1,75 @@
 <div class="body">
-  <div class="cuerpo">
+  <div class="contenedor contenedor--angosto">
 
-    <div *ngIf="productos && productos.length > 0; else noProductos">
-      <h3>Carrito de compras</h3>
+    <h1>Tu carrito</h1>
 
-      <ul>
-        <li *ngFor="let prod of productos; let i = index">
+    <div class="carrito" *ngIf="productos && productos.length > 0; else vacio">
 
-          <!-- IMAGEN -->
-          <div class="producto-imagen">
-            <img
-              src="/assets/img/{{prod.id}}.jpg"
-              alt="imagen"
-              class="img-producto"
-            >
+      <ul class="lista">
+        <li class="item card" *ngFor="let prod of productos; let i = index">
+
+          <img
+            [src]="prod.imagen || '/assets/img/placeholder.svg'"
+            alt="imagen"
+            class="item__imagen"
+          >
+
+          <div class="item__info">
+            <p class="item__nombre">{{ prod.nombre }}</p>
+            <p class="item__meta">Talla {{ prod.talla }} · {{ prod.precio | number:'1.0-0' }} CLP c/u</p>
+
+            <div class="item__cantidad">
+              <label>Cantidad</label>
+              <input
+                type="number"
+                min="1"
+                class="input"
+                [(ngModel)]="prod.cantidad"
+                (change)="actualizarCantidad()"
+              >
+            </div>
           </div>
 
-          <!-- INFO -->
-          <div class="producto-info">
-            <p class="nombre">
-              {{ prod.nombre }}
-            </p>
-
-            <p>
-              <strong>Precio unitario:</strong>
-              {{ prod.precio | number:'1.0-0' }} CLP
-            </p>
-
-            <p>
-                <strong>Talla:</strong>
-                {{ prod.talla }}
-            </p>
-
-            <p>
-              <strong>Cantidad:</strong>
-              {{ prod.cantidad }}
-            </p>
-
-            <p class="total">
-              <strong>Total:</strong>
-              {{ prod.precio * prod.cantidad | number:'1.0-0' }} CLP
-            </p>
-          </div>
-
-          <!-- ACCIONES -->
-          <div class="producto-acciones">
-            <button (click)="eliminarDelCarrito(i)">
-              Eliminar
+          <div class="item__acciones">
+            <p class="item__total">{{ prod.precio * prod.cantidad | number:'1.0-0' }} CLP</p>
+            <button class="item__eliminar" (click)="eliminarDelCarrito(i)" aria-label="Eliminar producto">
+              <i class="bi bi-trash3"></i>
             </button>
           </div>
 
         </li>
       </ul>
+
+      <!-- RESUMEN -->
+      <div class="resumen card">
+        <div class="resumen__fila resumen__fila--total">
+          <span>Subtotal</span>
+          <span>{{ total | number:'1.0-0' }} CLP</span>
+        </div>
+
+        <p class="resumen__nota">
+          <i class="bi bi-truck"></i>
+          El envío se calcula en el pago — gratis sobre $20.000 CLP
+        </p>
+
+        <button
+          class="btn btn--primary btn--block"
+          (click)="terminarCompra()"
+          [disabled]="cargando">
+          <span *ngIf="cargando" class="spinner"></span>
+          {{ cargando ? 'Redirigiendo a pago...' : 'Terminar compra' }}
+        </button>
+      </div>
+
     </div>
 
-    <ng-template #noProductos>
-      <p>No hay productos en el carrito</p>
+    <ng-template #vacio>
+      <div class="estado-vacio">
+        <i class="bi bi-cart-x"></i>
+        <p>Tu carrito está vacío</p>
+        <a routerLink="/" class="btn btn--ghost">Ver productos</a>
+      </div>
     </ng-template>
-
-    <div class="contenedor-botones">
-      <button
-        class="boton agregar-carrito"
-        (click)="terminarCompra()">
-        Terminar compra
-      </button>
-    </div>
 
   </div>
 </div>

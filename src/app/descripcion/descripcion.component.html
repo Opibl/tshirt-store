@@ -1,77 +1,72 @@
-<section class="body">
-  <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+<div class="body">
+  <div class="contenedor">
 
-  <div class="cuerpo">
+    <div class="ficha">
 
-    <!-- IMAGEN + OPCIONES -->
-    <div class="imagen">
-      <img [src]="'/assets/img/' + id + '.jpg'" alt="imagen" class="foto">
-
-      <div class="precio">
-        {{ precio }} CLP
+      <!-- IMAGEN -->
+      <div class="ficha__imagen card">
+        <img [src]="imagen || '/assets/img/placeholder.svg'" alt="imagen" class="foto">
       </div>
 
-      <div class="selector-talla">
+      <!-- INFO -->
+      <div class="ficha__info">
 
-        <p class="label-talla">TALLA</p>
+        <h1 class="ficha__nombre">{{ nombre }}</h1>
+        <p class="ficha__precio">{{ precio | number:'1.0-0' }} CLP</p>
 
-        <div class="tallas">
-          <button
-            *ngFor="let talla of tallas"
-            type="button"
-            class="talla-btn"
-            [class.activa]="tallaSeleccionada === talla"
-            (click)="tallaSeleccionada = talla">
+        <p class="ficha__descripcion">{{ descripcion }}</p>
 
-            {{ talla }}
+        <div class="selector-talla">
 
-          </button>
+          <p class="label">Talla</p>
+
+          <div class="tallas">
+            <button
+              *ngFor="let talla of tallas"
+              type="button"
+              class="talla-btn"
+              [class.activa]="tallaSeleccionada === talla"
+              (click)="tallaSeleccionada = talla">
+
+              {{ talla }}
+
+            </button>
+          </div>
+
         </div>
 
-        <p class="talla-elegida" *ngIf="tallaSeleccionada">
-          Talla seleccionada:
-          <strong>{{ tallaSeleccionada }}</strong>
-        </p>
-
         <div class="cantidad">
-          <label for="cantidad">Cantidad</label>
+          <label for="cantidad" class="label">Cantidad</label>
 
           <input
             id="cantidad"
             type="number"
             min="1"
+            class="input cantidad__input"
             [(ngModel)]="cantidadSeleccionada">
+        </div>
+
+        <div class="contenedor-botones">
+
+          <button
+            class="btn btn--ghost btn--block"
+            [disabled]="!tallaSeleccionada"
+            (click)="addToCart()">
+            <i class="bi bi-cart-plus"></i>
+            Agregar al carrito
+          </button>
+
+          <button
+            class="btn btn--primary btn--block"
+            [disabled]="!tallaSeleccionada"
+            (click)="comprarAhora()">
+            Comprar ahora
+          </button>
+
         </div>
 
       </div>
     </div>
 
-    <!-- DESCRIPCIÓN -->
-    <div class="descripcion">
-
-      <p>{{ descripcion }}</p>
-
-      <div class="contenedor-botones">
-
-        <button
-          class="boton agregar-carrito"
-          [disabled]="!tallaSeleccionada"
-          (click)="addToCart()">
-
-          Agregar al carrito
-
-        </button>
-
-        <button
-          class="boton comprar-ahora"
-          [disabled]="!tallaSeleccionada"
-          (click)="comprarAhora()">
-
-          Comprar ahora
-
-        </button>
-
-      </div>
-    </div>
   </div>
-</section>
+</div>

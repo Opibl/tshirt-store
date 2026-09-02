@@ -1,0 +1,79 @@
+/* Estilos compartidos entre login y register */
+
+.auth {
+  min-height: calc(100vh - 8rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+}
+
+.auth__card {
+  width: 100%;
+  max-width: 42rem;
+  padding: 3.2rem;
+  animation: aparecer 0.4s ease;
+}
+
+.auth__titulo {
+  text-align: center;
+  margin-bottom: 0.6rem;
+}
+
+.auth__subtitulo {
+  text-align: center;
+  font-size: 1.4rem;
+  margin-bottom: 2.6rem;
+}
+
+.form-group {
+  margin-bottom: 1.6rem;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.7rem;
+}
+
+.auth__separador {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  color: var(--text-faint);
+  font-size: 1.3rem;
+}
+
+.auth__separador::before,
+.auth__separador::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.auth__google-logo {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
+
+.auth__link {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 1.4rem;
+  color: var(--text-muted);
+}
+
+.auth__link a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.auth__link a:hover {
+  text-decoration: underline;
+}

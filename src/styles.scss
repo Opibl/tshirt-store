@@ -1,22 +1,396 @@
-/* You can add global styles to this file, and also import other style files */
-$primario: #9C27B0;
-$primarioOscuro: #89119D;
-$secundario: #FFCE00;
-$secundarioOscuro: rgb(233, 187, 2);
-$blanco: #FFF;
-$negro: #000;
-$fuentePrincipal: 'Staatliches', cursive;
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
+/* =========================================================
+   TSHIRT STORE — DESIGN SYSTEM
+   Tema oscuro, tipografía Space Grotesk + Inter.
+   Todo en variables CSS para mantener consistencia entre
+   páginas (cada componente Angular reutiliza estos tokens).
+========================================================= */
 
+:root {
+  /* Fondo / superficies (morado oscuro) */
+  --bg: #150e24;
+  --bg-translucent: rgba(21, 14, 36, 0.85); /* --bg con alfa, para el header sticky */
+  --bg-elevated: #1d1533;
+  --surface: #251b40;
+  --surface-hover: #2e234f;
+  --border: #3a2e5c;
+
+  /* Texto */
+  --text: #eef0f5;
+  --text-muted: #9aa3b8;
+  --text-faint: #6b7385;
+
+  /* Marca */
+  --accent: #a78bfa;
+  --accent-strong: #8b5cf6;
+  --accent-contrast: #0b0e14;
+  --accent-soft: rgba(167, 139, 250, 0.14);
+
+  /* Semánticos */
+  --success: #34d399;
+  --success-soft: rgba(52, 211, 153, 0.14);
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.14);
+
+  /* Tipografía */
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body: 'Inter', Arial, Helvetica, sans-serif;
+
+  /* Forma */
+  --radius-sm: 0.8rem;
+  --radius-md: 1.4rem;
+  --radius-lg: 2rem;
+  --radius-full: 999px;
+
+  /* Sombra */
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --shadow-glow: 0 0 0 4px var(--accent-soft);
+
+  --transition: 0.2s ease;
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%; /* 1rem = 10px en toda la app */
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.6rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* Foco visible consistente en toda la app */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   LAYOUT BASE
+========================================================= */
+
+.body {
+  min-height: 100vh;
+  background-color: var(--bg);
+  padding-bottom: 4rem;
+}
+
+.contenedor {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* =========================================================
+   TIPOGRAFÍA
+========================================================= */
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  line-height: 1.15;
+  margin: 0 0 1.5rem;
+}
+
+h2 {
+  font-size: clamp(2.2rem, 3.4vw, 2.8rem);
+  line-height: 1.2;
+  margin: 0 0 1.5rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+  line-height: 1.3;
+}
+
+p {
+  font-size: 1.6rem;
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   BOTONES (reutilizables en toda la app)
+========================================================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  padding: 1.2rem 2.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition),
+    background-color var(--transition), border-color var(--transition), opacity var(--transition);
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn--primary {
+  background: var(--accent-strong);
+  color: #ffffff;
+}
+
+.btn--primary:hover {
+  background: var(--accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.btn--ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--success {
+  background: var(--success);
+  color: #06281c;
+}
+
+.btn--success:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 0 4px var(--success-soft);
+}
+
+/* =========================================================
+   CAMPOS DE FORMULARIO
+========================================================= */
+
+.input {
+  width: 100%;
+  padding: 1.2rem 1.4rem;
+  font-size: 1.5rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.input::placeholder {
+  color: var(--text-faint);
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow);
+}
+
+/* =========================================================
+   TARJETAS
+========================================================= */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--radius-full);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.badge--success {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.badge--accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* =========================================================
+   ANIMACIONES COMPARTIDAS
+========================================================= */
+
+.spinner {
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   SWEETALERT2 (usado en agregar al carrito / errores)
+   Reskin para que combine con el tema oscuro.
+========================================================= */
+
+.swal2-popup {
+  background: var(--surface) !important;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md) !important;
+  font-family: var(--font-body) !important;
+}
+
+.swal2-title {
+  font-family: var(--font-display) !important;
+  color: var(--text) !important;
+}
+
+.swal2-html-container {
+  color: var(--text-muted) !important;
+}
+
+.swal2-confirm {
+  background: var(--accent-strong) !important;
+  border-radius: var(--radius-sm) !important;
+  font-family: var(--font-display) !important;
+  box-shadow: none !important;
+}
+
+.swal2-confirm:focus {
+  box-shadow: var(--shadow-glow) !important;
+}
+
+.swal2-cancel {
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.swal2-icon.swal2-success {
+  border-color: var(--success) !important;
+  color: var(--success) !important;
+}
+
+.swal2-icon.swal2-success [class^='swal2-success-line'] {
+  background-color: var(--success) !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: var(--danger) !important;
+  color: var(--danger) !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: var(--danger) !important;
+  color: var(--danger) !important;
+}
+
+/* =========================================================
+   FOOTER GLOBAL (index.html)
+========================================================= */
 
 .footer {
-    background-color: $primarioOscuro;
-    padding: 1rem 0;
-    
+  background-color: var(--bg-elevated);
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
 }
+
 .footer__texto {
-    color: $blanco;
-    font-family: $fuentePrincipal;
-    text-align: center;
-    font-size: 1.2rem;
+  font-family: var(--font-body);
+  text-align: center;
+  font-size: 1.4rem;
+  color: var(--text-faint);
 }

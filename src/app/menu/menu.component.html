@@ -1,78 +1,89 @@
 <header class="header">
-    <a routerLink="/">
-        <img class="header__logo" src="/assets/img/logo.png" alt="Logotipo">
-    </a>
+    <div class="header__inner">
 
-    <button class="menu-toggle" (click)="menuAbierto = !menuAbierto">
-        <i class="bi bi-list"></i>
-    </button>
+        <a class="header__brand" routerLink="/">
+            <img class="header__logo" src="/assets/img/logo.png" alt="Tshirt Store">
+        </a>
+
+        <nav class="navegacion navegacion--desktop">
+
+            <a class="navegacion__enlace" routerLink="/" routerLinkActive="navegacion__enlace--activo" [routerLinkActiveOptions]="{exact:true}">
+                Tienda
+            </a>
+
+            <a class="navegacion__enlace" routerLink="/nosotros" routerLinkActive="navegacion__enlace--activo">
+                Nosotros
+            </a>
+
+            <a *ngIf="usuarioLogueado" class="navegacion__enlace" routerLink="/history" routerLinkActive="navegacion__enlace--activo">
+                Mis compras
+            </a>
+
+        </nav>
+
+        <div class="header__acciones">
+
+            <a class="header__icono-btn" routerLink="/carrito" aria-label="Carrito">
+                <i class="bi bi-cart3"></i>
+                <span class="header__badge" *ngIf="cantidadCarrito > 0">{{ cantidadCarrito }}</span>
+            </a>
+
+            <a *ngIf="!usuarioLogueado" class="btn btn--ghost header__login" routerLink="/login">
+                Iniciar sesión
+            </a>
+
+            <button *ngIf="usuarioLogueado" class="btn btn--ghost header__login" (click)="cerrarSesion()" [disabled]="cerrandoSesion">
+                <span *ngIf="cerrandoSesion" class="spinner"></span>
+                Cerrar sesión
+            </button>
+
+            <button class="menu-toggle" (click)="menuAbierto = !menuAbierto" aria-label="Abrir menú">
+                <i class="bi" [class.bi-list]="!menuAbierto" [class.bi-x-lg]="menuAbierto"></i>
+            </button>
+
+        </div>
+
+    </div>
 </header>
 
-<div
-    class="overlay"
-    *ngIf="menuAbierto"
-    (click)="menuAbierto = false">
-</div>
+<div class="overlay" *ngIf="menuAbierto" (click)="menuAbierto = false"></div>
 
-<section class="hero-nav">
-    <nav class="navegacion" [class.abierto]="menuAbierto">
+<nav class="navegacion navegacion--movil" [class.abierto]="menuAbierto">
 
-        <!-- TIENDA -->
-        <a class="navegacion__enlace" routerLink="/" (click)="menuAbierto = false">
-            <i class="bi bi-house-door-fill"></i>
-            <span>Tienda</span>
-        </a>
+    <a class="navegacion__enlace" routerLink="/" (click)="menuAbierto = false">
+        <i class="bi bi-house-door-fill"></i>
+        <span>Tienda</span>
+    </a>
 
-        <!-- CARRITO -->
-        <a class="navegacion__enlace" routerLink="/carrito" (click)="menuAbierto = false">
-            <i class="bi bi-cart-fill"></i>
-            <span>Carrito</span>
-        </a>
+    <a class="navegacion__enlace" routerLink="/carrito" (click)="menuAbierto = false">
+        <i class="bi bi-cart-fill"></i>
+        <span>Carrito</span>
+        <span class="navegacion__badge" *ngIf="cantidadCarrito > 0">{{ cantidadCarrito }}</span>
+    </a>
 
-        <!-- NO LOGUEADO -->
-        <a
-            *ngIf="!usuarioLogueado"
-            class="navegacion__enlace"
-            routerLink="/login"
-            (click)="menuAbierto = false">
-            <i class="bi bi-box-arrow-in-right"></i>
-            <span>Iniciar sesión</span>
-        </a>
+    <a *ngIf="!usuarioLogueado" class="navegacion__enlace" routerLink="/login" (click)="menuAbierto = false">
+        <i class="bi bi-box-arrow-in-right"></i>
+        <span>Iniciar sesión</span>
+    </a>
 
-        <a
-            *ngIf="!usuarioLogueado"
-            class="navegacion__enlace"
-            routerLink="/register"
-            (click)="menuAbierto = false">
-            <i class="bi bi-person-plus-fill"></i>
-            <span>Registrarme</span>
-        </a>
+    <a *ngIf="!usuarioLogueado" class="navegacion__enlace" routerLink="/register" (click)="menuAbierto = false">
+        <i class="bi bi-person-plus-fill"></i>
+        <span>Registrarme</span>
+    </a>
 
-        <!-- LOGUEADO -->
-        <a
-            *ngIf="usuarioLogueado"
-            class="navegacion__enlace"
-            routerLink="/history"
-            (click)="menuAbierto = false">
+    <a *ngIf="usuarioLogueado" class="navegacion__enlace" routerLink="/history" (click)="menuAbierto = false">
+        <i class="bi bi-clock-history"></i>
+        <span>Mis compras</span>
+    </a>
 
-            <i class="bi bi-clock-history"></i>
-            <span>Mis compras</span>
+    <a *ngIf="usuarioLogueado" class="navegacion__enlace" (click)="cerrarSesion()">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Cerrar sesión</span>
+    </a>
 
-        </a>
+    <a class="navegacion__enlace" routerLink="/nosotros" (click)="menuAbierto = false">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>Nosotros</span>
+    </a>
 
-        <a
-            *ngIf="usuarioLogueado"
-            class="navegacion__enlace"
-            (click)="cerrarSesion()">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>Cerrar sesión</span>
-        </a>
-
-        <!-- NOSOTROS -->
-        <a class="navegacion__enlace" routerLink="/nosotros" (click)="menuAbierto = false">
-            <i class="bi bi-info-circle-fill"></i>
-            <span>Nosotros</span>
-        </a>
-
-    </nav>
-</section>
+</nav>

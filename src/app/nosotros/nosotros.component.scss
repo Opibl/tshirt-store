@@ -1,238 +1,95 @@
-/* ===============================
-   VARIABLES
-================================ */
-$primario: #9C27B0;
-$primarioOscuro: #89119D;
-$secundario: #FFCE00;
-$secundarioOscuro: rgb(233, 187, 2);
-$blanco: #FFF;
-$negro: #000;
-$fuentePrincipal: 'Staatliches', cursive;
-
-/* ===============================
-   BASE
-================================ */
-* {
-    box-sizing: border-box;
+.contenedor {
+  max-width: 90rem;
+  padding-top: 4rem;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-}
-
-.body {
-    background-color: $primario;
-    font-size: 1.6rem;
-    line-height: 1.6;
-    min-height: 100vh;
-    padding-bottom: 4rem;
-    color: $blanco;
-}
-
-/* ===============================
-   HEADER
-================================ */
-.header__contenido {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: $primario;
-}
-
-/* 🔧 LOGO CORREGIDO */
-.header__logo {
-    padding: 3rem 0;
-    height: 10.5rem;        /* ⬅️ MÁS GRANDE */
-    max-width: 100%;
-    object-fit: contain;
-}
-
-/* ===============================
-   NAVEGACIÓN
-================================ */
-.navegacion {
-    font-family: $fuentePrincipal;
-    text-transform: uppercase;
-    font-weight: bold;
-    display: flex;
-    gap: 2rem;
-    background-color: $primarioOscuro;
-    width: 100%;
-    justify-content: center;
-    padding: 1.2rem 0;
-}
-
-.navegacion__enlace {
-    text-decoration: none;
-    color: $blanco;
-    padding: 1rem;
-    font-size: 2rem;
-}
-
-.navegacion__enlace--activo,
-.navegacion__enlace:hover {
-    color: $secundario;
-}
-
-/* ===============================
-   CUERPO
-================================ */
-.cuerpo {
-    max-width: 100rem;
-    width: 100%;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-/* ===============================
-   SECCIONES COMO CARDS
-================================ */
 .seccion {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-radius: 1.8rem;
-    padding: 3.5rem;
-    margin-bottom: 4rem;
-
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
-    transition: transform .3s ease, box-shadow .3s ease;
+  margin-bottom: 3rem;
+  animation: aparecer 0.4s ease;
 }
 
-.seccion:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-}
-
-/* ===============================
-   TÍTULOS
-================================ */
-.seccion h1,
-.seccion h2 {
-    font-family: $fuentePrincipal;
-    color: $secundario;
-    text-align: center;
-    margin-bottom: 2rem;
-    letter-spacing: 1px;
-}
-
-/* ===============================
-   TEXTO
-================================ */
-.seccion p {
-    font-size: 1.7rem;
-    line-height: 1.8;
-    color: $blanco;
-    text-align: justify;
-}
-
-/* ===============================
-   INTRO (HERO)
-================================ */
 .seccion--intro {
-    text-align: center;
+  text-align: center;
+}
+
+.seccion--intro h1 {
+  margin-bottom: 1.6rem;
 }
 
 .seccion--intro p {
-    max-width: 70rem;
-    margin: 0 auto;
-    text-align: center;
+  max-width: 68rem;
+  margin: 0 auto;
+  font-size: 1.7rem;
 }
 
-/* ===============================
-   VALORES
-================================ */
-.seccion--valores {
-    background-color: rgba(0, 0, 0, 0.25);
+.seccion:not(.seccion--intro) {
+  padding: 3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
 }
+
+.seccion h2 {
+  margin-bottom: 1.6rem;
+}
+
+.seccion p {
+  font-size: 1.6rem;
+  line-height: 1.8;
+}
+
+/* =========================================================
+   VALORES
+========================================================= */
 
 .valores {
-    list-style: none;
-    display: grid;
-    gap: 2rem;
-    margin-top: 3rem;
-    padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1.6rem;
+  margin-top: 2rem;
 }
 
 .valores li {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 1.2rem;
-    font-size: 1.6rem;
-    line-height: 1.6;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  padding: 1.8rem 2rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: var(--text-muted);
 }
 
 .valores strong {
-    color: $secundario;
-    font-family: $fuentePrincipal;
+  display: block;
+  font-family: var(--font-display);
+  color: var(--accent);
+  margin-bottom: 0.4rem;
 }
 
-/* ===============================
+/* =========================================================
    CIERRE
-================================ */
+========================================================= */
+
 .seccion--cierre {
-    text-align: center;
+  text-align: center;
+  background: linear-gradient(135deg, var(--accent-soft), transparent);
+}
+
+.seccion--cierre p {
+  max-width: 60rem;
+  margin: 0 auto;
 }
 
 .cierre__destacado {
-    margin-top: 2rem;
-    font-size: 1.9rem;
-    font-family: $fuentePrincipal;
-    color: $secundario;
+  margin-top: 1.4rem;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--accent) !important;
 }
 
-/* ===============================
-   RESPONSIVE
-================================ */
-@media (max-width: 768px) {
-
-    .header__logo {
-        height: 10rem;   /* ⬅️ tablet */
-    }
-
-    .navegacion {
-        gap: 1.5rem;
-    }
-
-    .navegacion__enlace {
-        font-size: 1.7rem;
-    }
-
-    .seccion {
-        padding: 2.5rem;
-        margin-bottom: 3rem;
-    }
-
-    .seccion p {
-        font-size: 1.5rem;
-        text-align: left;
-    }
-
-    .seccion--intro p {
-        text-align: left;
-    }
-}
-
-@media (max-width: 480px) {
-
-    .header__logo {
-        height: 10rem;   /* ⬅️ móvil */
-    }
-
-    .navegacion {
-        flex-wrap: wrap;
-    }
-
-    .navegacion__enlace {
-        font-size: 1.6rem;
-    }
-
-    .seccion {
-        padding: 2rem;
-    }
-
-    .valores li {
-        padding: 1.5rem;
-        font-size: 1.5rem;
-    }
+@media (min-width: 640px) {
+  .valores {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

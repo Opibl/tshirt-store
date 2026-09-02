@@ -1,0 +1,36 @@
+.estado {
+  min-height: calc(100vh - 8rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.estado__card {
+  width: 100%;
+  max-width: 46rem;
+  padding: 4rem 3rem;
+  text-align: center;
+}
+
+.estado__icono {
+  width: 6.4rem;
+  height: 6.4rem;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 2.6rem;
+}
+
+.estado h1 {
+  margin-bottom: 1rem;
+}
+
+.estado p {
+  margin-bottom: 2.4rem;
+  font-size: 1.5rem;
+}
