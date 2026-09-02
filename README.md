@@ -157,13 +157,12 @@ STRIPE_WEBHOOK_SECRET=your_webhook_secret
 RESEND_API_KEY=your_resend_api_key
 EMAIL_TO=admin@email.com
 
-# Firebase
-FIREBASE_API_KEY=your_firebase_key
-FIREBASE_AUTH_DOMAIN=your_domain
+# Firebase (proyecto)
 FIREBASE_PROJECT_ID=your_project
-FIREBASE_STORAGE_BUCKET=your_bucket
-FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-FIREBASE_APP_ID=your_app_id
+
+# Firebase Admin SDK (cuenta de servicio, ver backend/.env.example)
+FIREBASE_CLIENT_EMAIL=your-service-account@your-project.iam.gserviceaccount.com
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 Instalación
 1. Clonar repositorio
 git clone https://github.com/tuusuario/tshirt-store.git

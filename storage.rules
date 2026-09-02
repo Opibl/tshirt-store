@@ -1,0 +1,18 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Imágenes de productos: lectura pública (las necesita la tienda sin login),
+    // escritura solo desde el backend / consola (Admin SDK ignora estas reglas).
+    match /productos/{archivo} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Cualquier otra ruta: denegado por defecto.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
