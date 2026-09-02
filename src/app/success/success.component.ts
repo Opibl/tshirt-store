@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CARRITOService } from '../carrito.service';
 
 @Component({
   selector: 'app-success',
   standalone: true,
-  template: `<h2>Pago realizado con éxito 🎉</h2>`
+  imports: [RouterLink],
+  templateUrl: './success.component.html',
+  styleUrl: './success.component.scss'
 })
 export class SuccessComponent implements OnInit {
 

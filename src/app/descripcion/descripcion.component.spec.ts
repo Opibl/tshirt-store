@@ -39,7 +39,8 @@ describe('DescripcionComponent', () => {
   ========================= */
 
   const servicioMock = {
-    obtenerDatos: jest.fn().mockReturnValue(of([productoMock]))
+    obtenerDatos: jest.fn().mockReturnValue(of([productoMock])),
+    stripe: jest.fn()
   };
 
   /* =========================
@@ -147,7 +148,8 @@ describe('DescripcionComponent', () => {
         nombre: 'Producto Test',
         precio: 100,
         talla: 'M',
-        cantidad: 2
+        cantidad: 2,
+        imagen: ''
 
       });
 
@@ -157,18 +159,26 @@ describe('DescripcionComponent', () => {
      COMPRAR AHORA
   ========================= */
 
-  it('should add product and navigate to carrito', () => {
+  it('should start Stripe checkout with the selected product', () => {
 
     component.tallaSeleccionada = 'L';
     component.cantidadSeleccionada = 1;
 
+    servicioMock.stripe.mockReturnValue(
+      of({ url: 'https://checkout.stripe.com/test-session' })
+    );
+
     component.comprarAhora();
 
-    expect(carritoMock.Agregar)
-      .toHaveBeenCalled();
-
-    expect(routerMock.navigate)
-      .toHaveBeenCalledWith(['/carrito']);
+    expect(servicioMock.stripe).toHaveBeenCalledWith([
+      {
+        id: '1',
+        nombre: 'Producto Test',
+        precio: 100,
+        talla: 'L',
+        cantidad: 1
+      }
+    ]);
 
   });
 

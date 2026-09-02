@@ -11,6 +11,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { PurchaseHistoryComponent } from './user/purchase-history/purchase-history.component';
 import { OrderTrackingComponent } from './user/order-tracking/order-tracking.component';
+import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
     { path: '', component: PagInicioComponent },
@@ -23,6 +24,8 @@ export const routes: Routes = [
     // NUEVAS RUTAS
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'history', component: PurchaseHistoryComponent },
-    { path: 'tracking', component: OrderTrackingComponent }
+
+    // 🔒 RUTAS PRIVADAS: requieren sesión iniciada
+    { path: 'history', component: PurchaseHistoryComponent, canActivate: [authGuard] },
+    { path: 'tracking', component: OrderTrackingComponent, canActivate: [authGuard] }
 ];

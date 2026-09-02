@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 
 export interface Producto {
 
@@ -8,6 +8,7 @@ export interface Producto {
   precio: any;
   talla: any;
   cantidad: number;
+  imagen?: string;
 
 }
 
@@ -18,9 +19,15 @@ export class CARRITOService {
 
   private productos: Producto[] = [];
 
+  private cantidadTotal = new BehaviorSubject<number>(0);
+
+  // 🔔 Cantidad total de unidades en el carrito, para el badge del menú
+  readonly cantidadTotal$ = this.cantidadTotal.asObservable();
+
   constructor() {
 
     this.cargarDesdeLocalStorage();
+    this.emitirCantidad();
 
   }
 
@@ -47,6 +54,7 @@ export class CARRITOService {
     }
 
     this.guardarEnLocalStorage();
+    this.emitirCantidad();
 
     return producto;
 
@@ -72,6 +80,8 @@ export class CARRITOService {
 
     }
 
+    this.emitirCantidad();
+
   }
 
 
@@ -81,6 +91,29 @@ export class CARRITOService {
     this.productos.splice(index, 1);
 
     this.guardarEnLocalStorage();
+    this.emitirCantidad();
+
+  }
+
+
+  // 🔄 Releer localStorage y notificar — usar cuando el carrito
+  // se modifica por fuera del servicio (ver CarritoComponent)
+  sincronizar(): void {
+
+    this.cargarDesdeLocalStorage();
+    this.emitirCantidad();
+
+  }
+
+
+  private emitirCantidad(): void {
+
+    const total = this.productos.reduce(
+      (sum, p) => sum + (Number(p.cantidad) || 0),
+      0
+    );
+
+    this.cantidadTotal.next(total);
 
   }
 
