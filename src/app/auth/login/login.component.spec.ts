@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 
 import { LoginComponent } from './login.component';
 
@@ -8,10 +11,20 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoginComponent]
+      imports: [LoginComponent, RouterTestingModule],
+      providers: [
+        provideFirebaseApp(() =>
+          initializeApp({
+            apiKey: 'test-api-key',
+            authDomain: 'test.firebaseapp.com',
+            projectId: 'test-project',
+          })
+        ),
+        provideAuth(() => getAuth())
+      ]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

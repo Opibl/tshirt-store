@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { CancelComponent } from './cancel.component';
 
@@ -8,7 +9,8 @@ describe('CancelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CancelComponent]
+      imports: [CancelComponent],
+      providers: [provideRouter([])]
     })
     .compileComponents();
     

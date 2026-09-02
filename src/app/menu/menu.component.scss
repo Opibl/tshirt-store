@@ -1,138 +1,226 @@
-@import "bootstrap-icons/font/bootstrap-icons.css";
-/* HEADER */
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 .header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0;
-    background: linear-gradient(135deg, #9c27b0, #6a1b9a);
-    position: relative;
+  background: var(--bg-translucent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header__inner {
+  max-width: 130rem;
+  margin: 0 auto;
+  padding: 1.4rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header__brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .header__logo {
-    width: 180px;
-    max-width: 100%;
+  height: 3.6rem;
+  width: auto;
 }
 
-/* BOTÓN HAMBURGUESA */
-.menu-toggle {
-    display: none;
-    position: absolute;
-    right: 20px;
-    top: 30px;
-    font-size: 2rem;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    z-index: 1001;
-}
+/* =========================================================
+   NAV DESKTOP (integrada en el header)
+========================================================= */
 
-/* HERO NAV */
-.hero-nav {
-    background: linear-gradient(135deg, #9c27b0, #6a1b9a);
-    padding: 1.5rem 0 3rem;
-}
-
-/* NAV DESKTOP */
-.navegacion {
-    width: fit-content;
-    margin: auto;
-    padding: 1rem 1.5rem;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    background: rgba(61, 0, 102, 0.9);
-    border-radius: 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    transition: 0.3s ease;
+.navegacion--desktop {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  margin-right: auto;
 }
 
 .navegacion__enlace {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 0.8rem 1.2rem;
-    border-radius: 14px;
-    transition: all 0.3s ease;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background-color var(--transition);
 }
 
-/* HOVER AMARILLO */
 .navegacion__enlace:hover {
-    background: #ffd600;
-    color: #3d0066;
-    box-shadow: 0 0 12px rgba(255, 214, 0, 0.45);
-    transform: translateY(-2px);
-}
-
-/* ICONO */
-.navegacion__enlace i {
-    transition: 0.3s ease;
-}
-
-.navegacion__enlace:hover i {
-    color: #3d0066;
+  color: var(--text);
+  background: var(--surface-hover);
 }
 
 .navegacion__enlace--activo {
-    border: 2px solid #ffd600;
+  color: var(--accent);
 }
 
-/* OVERLAY */
+/* =========================================================
+   ACCIONES (carrito, login, hamburguesa)
+========================================================= */
+
+.header__acciones {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.header__icono-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.2rem;
+  height: 4.2rem;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 1.9rem;
+  transition: background-color var(--transition);
+}
+
+.header__icono-btn:hover {
+  background: var(--surface-hover);
+}
+
+.header__badge {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  padding: 0 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-strong);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg);
+}
+
+.header__login {
+  display: none;
+  padding: 0.9rem 1.6rem;
+  font-size: 1.3rem;
+}
+
+.menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.2rem;
+  height: 4.2rem;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 2.2rem;
+  cursor: pointer;
+}
+
+/* =========================================================
+   OVERLAY + NAV MÓVIL
+========================================================= */
+
 .overlay {
-    display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 998;
 }
 
-/* MÓVIL */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: block;
-        left: 20px;
-        right: auto;
-    }
+.navegacion--movil {
+  position: fixed;
+  top: 0;
+  right: -28rem;
+  width: 26rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 8rem 1.6rem 2rem;
+  background: var(--bg-elevated);
+  border-left: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  transition: right 0.3s ease;
+  z-index: 999;
+}
 
-    .hero-nav {
-        padding: 0;
-    }
+.navegacion--movil.abierto {
+  right: 0;
+}
 
-    .overlay {
-        display: block;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.45);
-        z-index: 998;
-    }
+.navegacion--movil .navegacion__enlace {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.2rem 1.4rem;
+  font-size: 1.5rem;
+  color: var(--text);
+  border-radius: var(--radius-sm);
+}
 
-    .navegacion {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 220px; /* MÁS DELGADO */
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 1rem;
-        padding: 5rem 1rem 2rem; /* MENOS ANCHO INTERNO */
-        border-radius: 0;
-        background: #5b1480;
-        transition: 0.3s ease;
-        z-index: 999;
-        box-shadow: 10px 0 20px rgba(0,0,0,0.35);
-    }
+.navegacion--movil .navegacion__enlace:hover {
+  background: var(--surface-hover);
+  color: var(--accent);
+}
 
-    .navegacion.abierto {
-        left: 0;
-    }
+.navegacion--movil .navegacion__enlace i {
+  font-size: 1.7rem;
+  width: 2rem;
+  text-align: center;
+  color: var(--text-faint);
+}
 
-    .navegacion__enlace {
-        width: 100%;
-        padding: 0.9rem 1rem;
-        border-radius: 10px;
-        background: rgba(255,255,255,0.06);
-        box-sizing: border-box;
-    }
+.navegacion__badge {
+  margin-left: auto;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-strong);
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+}
+
+/* =========================================================
+   DESKTOP (≥ 992px): nav + login inline, sin hamburguesa
+========================================================= */
+
+@media (min-width: 992px) {
+
+  .navegacion--desktop {
+    display: flex;
+  }
+
+  .header__login {
+    display: inline-flex;
+  }
+
+  .menu-toggle {
+    display: none;
+  }
+
+  .overlay,
+  .navegacion--movil {
+    display: none;
+  }
 }

@@ -1,19 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { Subscription, switchMap, of, from } from 'rxjs';
 
-import { Auth, onAuthStateChanged, Unsubscribe } from '@angular/fire/auth';
-import {
-  Firestore,
-  collection,
-  collectionData
-} from '@angular/fire/firestore';
-
-import { Subscription } from 'rxjs';
+import { AuthService } from '../../auth/auth.service';
+import { ServicoService } from '../../servico.service';
 
 @Component({
   selector: 'app-purchase-history',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './purchase-history.component.html',
   styleUrls: ['./purchase-history.component.scss']
 })
@@ -21,76 +17,51 @@ export class PurchaseHistoryComponent implements OnInit, OnDestroy {
 
   compras: any[] = [];
   cargando = true;
+  error = false;
 
-  private authUnsubscribe?: Unsubscribe;
   private comprasSubscription?: Subscription;
 
   constructor(
-    private auth: Auth,
-    private firestore: Firestore
-  ) {
-    console.log('🔥 Proyecto Firebase:', this.firestore.app.options.projectId);
-  }
+    private authService: AuthService,
+    private servicio: ServicoService
+  ) {}
 
   ngOnInit(): void {
     this.obtenerCompras();
   }
 
   ngOnDestroy(): void {
-    this.authUnsubscribe?.();
     this.comprasSubscription?.unsubscribe();
   }
 
   obtenerCompras(): void {
-    console.log('🔍 Esperando usuario...');
 
-    this.authUnsubscribe = onAuthStateChanged(this.auth, (usuario) => {
-      console.log('👤 Usuario autenticado:', usuario);
+    this.comprasSubscription = this.authService.usuario$.pipe(
 
-      if (!usuario) {
-        console.log('❌ No hay usuario autenticado');
-        this.compras = [];
-        this.cargando = false;
-        return;
-      }
+      switchMap(usuario => {
 
-      const emailBuscado = usuario.email?.trim().toLowerCase();
-
-      console.log('📧 Email actual:', emailBuscado);
-      console.log('🆔 UID actual:', usuario.uid);
-
-      if (!emailBuscado) {
-        console.warn('❌ Usuario sin email');
-        this.compras = [];
-        this.cargando = false;
-        return;
-      }
-
-      const comprasRef = collection(this.firestore, 'compras');
-
-      this.comprasSubscription?.unsubscribe();
-
-      this.comprasSubscription = collectionData(comprasRef, {
-        idField: 'id'
-      }).subscribe({
-        next: (data: any[]) => {
-          console.log('🔥 Todas las compras:', data);
-
-          this.compras = data.filter(compra =>
-            compra.email?.trim().toLowerCase() === emailBuscado
-          );
-
-          console.log('✅ Compras filtradas:', this.compras);
-          console.log('📦 Cantidad:', this.compras.length);
-
-          this.cargando = false;
-        },
-        error: (error) => {
-          console.error('❌ Error Firestore:', error);
-          this.compras = [];
-          this.cargando = false;
+        if (!usuario) {
+          return of(null);
         }
-      });
+
+        // 🔒 El backend valida este token y solo devuelve
+        // las compras del usuario autenticado (no las de todos).
+        return from(usuario.getIdToken()).pipe(
+          switchMap(token => this.servicio.obtenerCompras(token))
+        );
+      })
+
+    ).subscribe({
+      next: (data) => {
+        this.compras = data ?? [];
+        this.cargando = false;
+      },
+      error: (error) => {
+        console.error('❌ Error obteniendo compras:', error);
+        this.compras = [];
+        this.cargando = false;
+        this.error = true;
+      }
     });
   }
 }

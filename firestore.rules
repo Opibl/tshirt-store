@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Catálogo: lectura pública (lo necesita la tienda sin login),
+    // escritura solo desde el backend (Admin SDK, que ignora estas reglas).
+    match /productos/{productoId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Compras: contienen datos personales (nombre, email, dirección).
+    // Solo el backend (Admin SDK) puede leerlas o escribirlas;
+    // ningún cliente accede directo a esta colección.
+    match /compras/{compraId} {
+      allow read: if false;
+      allow write: if false;
+    }
+
+    // Cualquier otra colección: denegado por defecto.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

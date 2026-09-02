@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { CARRITOService } from '../carrito.service';
@@ -9,7 +9,7 @@ import { ServicoService } from '../servico.service';
 @Component({
   selector: 'app-carrito',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './carrito.component.html',
   styleUrls: ['./carrito.component.scss'],
 })
@@ -55,6 +55,7 @@ export class CarritoComponent implements OnInit {
       JSON.stringify(this.productos)
     );
 
+    this.carrito.sincronizar();
     this.calcularTotal();
   }
 
@@ -72,6 +73,7 @@ export class CarritoComponent implements OnInit {
       JSON.stringify(this.productos)
     );
 
+    this.carrito.sincronizar();
     this.calcularTotal();
   }
 

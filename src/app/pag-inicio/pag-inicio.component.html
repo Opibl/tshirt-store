@@ -1,126 +1,116 @@
 <div class="body">
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="contenedor">
 
-        <h1>Tienda Oficial de Camisetas Tech</h1>
+        <!-- HERO -->
+        <section class="hero">
+            <span class="badge badge--accent hero__kicker">Ropa para developers</span>
+            <h1>Poleras que hablan tu lenguaje <span class="hero__resaltado">de programación</span></h1>
+            <p class="hero__subtitulo">
+                Diseños inspirados en React, Vue, Node y más — para vestir tu pasión por el código.
+            </p>
 
-        <!-- BANNER PROMOCIONAL -->
-        <section class="banner">
-            <h2>🚚 Envíos a todo Chile por $3.990</h2>
-            <p>Envío gratis en compras sobre $20.000 CLP</p>
+            <div class="hero__envio">
+                <i class="bi bi-truck"></i>
+                Envíos a todo Chile · Gratis sobre $20.000 CLP
+            </div>
         </section>
 
-        <!-- BUSCADOR -->
-        <input
-            type="text"
-            class="buscador"
-            placeholder="Buscar producto..."
-            [(ngModel)]="terminoBusqueda"
-        >
+        <!-- BUSCADOR + FILTROS -->
+        <section class="toolbar">
 
-        <!-- FILTROS -->
-        <div class="filtros">
+            <div class="toolbar__buscador">
+                <i class="bi bi-search"></i>
+                <input
+                    type="text"
+                    class="input"
+                    placeholder="Buscar por nombre..."
+                    [(ngModel)]="terminoBusqueda"
+                >
+            </div>
 
-            <select [(ngModel)]="filtroPrecio">
-                <option value="">Todos los precios</option>
-                <option value="3000">Hasta 3.000 CLP</option>
-                <option value="5000">Hasta 5.000 CLP</option>
-                <option value="7000">Hasta 7.000 CLP</option>
-                <option value="10000">Hasta 10.000 CLP</option>
-            </select>
+            <div class="toolbar__filtros">
 
-            <select [(ngModel)]="ordenPrecio">
-                <option value="">Ordenar por</option>
-                <option value="asc">Precio: menor a mayor</option>
-                <option value="desc">Precio: mayor a menor</option>
-            </select>
+                <select class="input toolbar__select" [(ngModel)]="filtroPrecio">
+                    <option value="">Precio</option>
+                    <option value="3000">Hasta $3.000</option>
+                    <option value="5000">Hasta $5.000</option>
+                    <option value="7000">Hasta $7.000</option>
+                    <option value="10000">Hasta $10.000</option>
+                </select>
 
-        </div>
+                <select class="input toolbar__select" [(ngModel)]="ordenPrecio">
+                    <option value="">Ordenar por</option>
+                    <option value="asc">Precio: menor a mayor</option>
+                    <option value="desc">Precio: mayor a menor</option>
+                </select>
 
-        <!-- CONTADOR -->
+            </div>
+
+        </section>
+
         <p class="contador">
-            Mostrando {{ productosFiltrados.length }} productos
+            {{ productosFiltrados.length }} producto{{ productosFiltrados.length === 1 ? '' : 's' }} encontrado{{ productosFiltrados.length === 1 ? '' : 's' }}
         </p>
 
         <!-- SIN RESULTADOS -->
-        <p
-            *ngIf="productosFiltrados.length === 0"
-            class="sin-resultados"
-        >
-            No se encontraron productos 😕
-        </p>
+        <div class="estado-vacio" *ngIf="productosFiltrados.length === 0">
+            <i class="bi bi-emoji-frown"></i>
+            <p>No encontramos productos con ese filtro</p>
+        </div>
 
         <!-- DESTACADOS -->
-        <section
-            class="destacados"
-            *ngIf="productosFiltrados.length > 0"
-        >
-            <h2>⭐ Productos Destacados</h2>
+        <section class="seccion-productos" *ngIf="productosFiltrados.length > 0">
+            <h2 class="seccion-productos__titulo">
+                <i class="bi bi-stars"></i>
+                Destacados
+            </h2>
 
-            <div class="grid">
-                <div
-                    class="producto destacado"
+            <div class="grid grid--destacados">
+                <a
+                    class="producto producto--destacado"
                     *ngFor="let producto of productosFiltrados | slice:0:3"
+                    [routerLink]="['/descripcion', producto.id]"
                 >
-                    <a [routerLink]="['/descripcion', producto.id]">
-
+                    <div class="producto__imagen-wrap">
                         <img
                             class="producto__imagen"
-                            src="/assets/img/{{ producto.id }}.jpg"
+                            [src]="producto.imagen || '/assets/img/placeholder.svg'"
                             [alt]="'imagen ' + producto.nombre"
                         >
+                    </div>
 
-                        <div class="producto__informacion">
-                            <p class="producto__nombre">
-                                {{ producto.nombre }}
-                            </p>
-
-                            <p class="producto__precio">
-                                {{ producto.precio | number:'1.0-0' }} CLP
-                            </p>
-                        </div>
-
-                    </a>
-                </div>
+                    <div class="producto__info">
+                        <p class="producto__nombre">{{ producto.nombre }}</p>
+                        <p class="producto__precio">{{ producto.precio | number:'1.0-0' }} CLP</p>
+                    </div>
+                </a>
             </div>
         </section>
 
         <!-- TODOS LOS PRODUCTOS -->
-        <section class="lista-productos">
-            <h2>Todos los Productos</h2>
+        <section class="seccion-productos" *ngIf="productosFiltrados.length > 0">
+            <h2 class="seccion-productos__titulo">Todos los productos</h2>
 
             <div class="grid">
-
-                <div
+                <a
                     class="producto"
                     *ngFor="let producto of productosFiltrados"
+                    [routerLink]="['/descripcion', producto.id]"
                 >
-                    <a [routerLink]="['/descripcion', producto.id]">
-
+                    <div class="producto__imagen-wrap">
                         <img
                             class="producto__imagen"
-                            src="/assets/img/{{ producto.id }}.jpg"
+                            [src]="producto.imagen || '/assets/img/placeholder.svg'"
                             [alt]="'imagen ' + producto.nombre"
                         >
+                    </div>
 
-                        <div class="producto__informacion">
-                            <p class="producto__nombre">
-                                {{ producto.nombre }}
-                            </p>
-
-                            <p class="producto__precio">
-                                {{ producto.precio | number:'1.0-0' }} CLP
-                            </p>
-                        </div>
-
-                    </a>
-                </div>
-
-                <!-- GRAFICOS -->
-                <div class="grafico grafico--camisas"></div>
-                <div class="grafico grafico--node"></div>
-
+                    <div class="producto__info">
+                        <p class="producto__nombre">{{ producto.nombre }}</p>
+                        <p class="producto__precio">{{ producto.precio | number:'1.0-0' }} CLP</p>
+                    </div>
+                </a>
             </div>
         </section>
 

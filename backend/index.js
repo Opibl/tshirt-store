@@ -1,19 +1,29 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { initializeApp } from 'firebase/app';
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  doc,
-  setDoc,
-  serverTimestamp
-} from 'firebase/firestore';
+import admin from 'firebase-admin';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
 
 dotenv.config();
+
+/* =========================
+   VARIABLES DE ENTORNO REQUERIDAS
+========================= */
+
+const VARIABLES_REQUERIDAS = [
+  'STRIPE_SECRET_KEY',
+  'FIREBASE_PROJECT_ID',
+  'FIREBASE_CLIENT_EMAIL',
+  'FIREBASE_PRIVATE_KEY',
+];
+
+const faltantes = VARIABLES_REQUERIDAS.filter(key => !process.env[key]);
+
+if (faltantes.length > 0) {
+  console.error('❌ Faltan variables de entorno:', faltantes.join(', '));
+  process.exit(1);
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -26,20 +36,49 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 /* =========================
-   FIREBASE
+   FIREBASE ADMIN
+   (SDK de servidor: verifica tokens de usuario y accede
+   a Firestore ignorando las reglas de seguridad del cliente)
 ========================= */
 
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-};
+admin.initializeApp({
+  credential: admin.credential.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  }),
+});
 
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore(firebaseApp);
+const db = admin.firestore();
+
+/* =========================
+   AUTENTICACIÓN
+========================= */
+
+// 🔒 Verifica el ID token de Firebase enviado en "Authorization: Bearer <token>"
+async function verificarToken(req, res, next) {
+
+  const authHeader = req.headers.authorization || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+
+  if (!token) {
+    return res.status(401).json({ error: 'No autenticado' });
+  }
+
+  try {
+
+    const decoded = await admin.auth().verifyIdToken(token);
+    req.usuario = decoded;
+    next();
+
+  } catch (error) {
+
+    console.error('Token inválido:', error.message);
+    res.status(401).json({ error: 'Token inválido o expirado' });
+
+  }
+
+}
 
 /* =========================
    EXPRESS
@@ -63,8 +102,7 @@ server.get('/productos', async (req, res) => {
 
   try {
 
-    const productosCol = collection(db, 'productos');
-    const snapshot = await getDocs(productosCol);
+    const snapshot = await db.collection('productos').get();
 
     const productos = snapshot.docs.map(doc => ({
       id: doc.id,
@@ -90,16 +128,19 @@ server.get('/productos', async (req, res) => {
    CREAR CHECKOUT SESSION
 ========================= */
 
+const TALLAS_PERMITIDAS = ['S', 'M', 'L', 'XL'];
+const CANTIDAD_MAXIMA = 20;
+
 server.post('/create-checkout-session', async (req, res) => {
 
   try {
 
-    const productos = req.body.productos;
+    const itemsRecibidos = req.body.productos;
 
     console.log("\n🛒 Productos recibidos:");
-    console.log(productos);
+    console.log(itemsRecibidos);
 
-    if (!productos || productos.length === 0) {
+    if (!Array.isArray(itemsRecibidos) || itemsRecibidos.length === 0) {
 
       return res.status(400).json({
         error: "No hay productos"
@@ -107,7 +148,52 @@ server.post('/create-checkout-session', async (req, res) => {
 
     }
 
-    const line_items = productos.map(item => ({
+    /* ===== VALIDAR PRODUCTOS CONTRA FIRESTORE =====
+       🔒 El precio NUNCA se toma del cliente: se busca
+       el producto real en Firestore y se usa su precio. */
+
+    const productosValidados = [];
+
+    for (const item of itemsRecibidos) {
+
+      if (!item.id) {
+        return res.status(400).json({ error: 'Producto sin id' });
+      }
+
+      if (!TALLAS_PERMITIDAS.includes(item.talla)) {
+        return res.status(400).json({ error: `Talla inválida: ${item.talla}` });
+      }
+
+      const cantidad = Number(item.cantidad);
+
+      if (!Number.isInteger(cantidad) || cantidad < 1 || cantidad > CANTIDAD_MAXIMA) {
+        return res.status(400).json({ error: `Cantidad inválida para el producto ${item.id}` });
+      }
+
+      const productoSnap = await db.collection('productos').doc(String(item.id)).get();
+
+      if (!productoSnap.exists) {
+        return res.status(400).json({ error: `Producto no encontrado: ${item.id}` });
+      }
+
+      const productoData = productoSnap.data();
+      const precioReal = Number(productoData.precio);
+
+      if (!Number.isFinite(precioReal) || precioReal <= 0) {
+        return res.status(400).json({ error: `Precio inválido para el producto ${item.id}` });
+      }
+
+      productosValidados.push({
+        id: item.id,
+        nombre: productoData.nombre,
+        talla: item.talla,
+        cantidad,
+        precio: precioReal
+      });
+
+    }
+
+    const line_items = productosValidados.map(item => ({
 
       price_data: {
 
@@ -117,20 +203,19 @@ server.post('/create-checkout-session', async (req, res) => {
           name: `${item.nombre} - Talla ${item.talla}`,
         },
 
-        unit_amount: Number(item.precio),
+        unit_amount: item.precio,
 
       },
 
-      quantity: Number(item.cantidad),
+      quantity: item.cantidad,
 
     }));
 
 
     /* ===== CALCULAR ENVÍO ===== */
 
-    const total = productos.reduce(
-      (sum, item) =>
-        sum + Number(item.precio) * Number(item.cantidad),
+    const total = productosValidados.reduce(
+      (sum, item) => sum + item.precio * item.cantidad,
       0
     );
 
@@ -337,8 +422,6 @@ server.post('/stripe-webhook', async (req, res) => {
 
       console.log("💾 Intentando guardar compra...");
 
-      const compraRef = doc(db, 'compras', session.id);
-
       const compraData = {
         sessionId: session.id,
         paymentIntent: session.payment_intent,
@@ -366,7 +449,7 @@ server.post('/stripe-webhook', async (req, res) => {
 
       console.log("📦 Datos a guardar:", compraData);
 
-      await setDoc(compraRef, compraData);
+      await db.collection('compras').doc(session.id).set(compraData);
 
       console.log("✅ Compra guardada en Firestore");
 
@@ -496,20 +579,48 @@ server.post('/stripe-webhook', async (req, res) => {
 
 });
 
-server.get('/compras', async (req, res) => {
-  try {
-    const snapshot = await getDocs(collection(db, 'compras'));
+/* =========================
+   COMPRAS DEL USUARIO AUTENTICADO
+   🔒 Requiere token de Firebase válido. Solo devuelve
+   las compras cuyo email coincide con el del usuario logueado.
+========================= */
 
-    const compras = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+server.get('/compras', verificarToken, async (req, res) => {
+
+  try {
+
+    const email = req.usuario.email?.toLowerCase();
+
+    if (!email) {
+      return res.status(400).json({ error: 'El usuario no tiene email asociado' });
+    }
+
+    const snapshot = await db.collection('compras')
+      .where('email', '==', email)
+      .get();
+
+    const compras = snapshot.docs.map(doc => {
+
+      const data = doc.data();
+
+      return {
+        id: doc.id,
+        ...data,
+        // 🔹 Timestamp de Firestore -> ISO string plano para el frontend
+        fecha: data.fecha?.toDate ? data.fecha.toDate().toISOString() : data.fecha
+      };
+
+    });
 
     res.json(compras);
+
   } catch (error) {
+
     console.error("Error obteniendo compras:", error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error obteniendo compras' });
+
   }
+
 });
 
 

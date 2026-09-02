@@ -22,6 +22,7 @@ export class DescripcionComponent implements OnInit {
   nombre: string = '';
   descripcion: string = '';
   precio: number = 0;
+  imagen: string = '';
 
   // 🔹 Tallas y cantidad
   tallas: string[] = ['S', 'M', 'L', 'XL'];
@@ -61,6 +62,7 @@ export class DescripcionComponent implements OnInit {
         this.nombre = producto.nombre;
         this.descripcion = producto.descripcion;
         this.precio = Number(producto.precio);
+        this.imagen = producto.imagen || '';
 
         this.productos = [producto];
       },
@@ -90,7 +92,8 @@ export class DescripcionComponent implements OnInit {
       nombre: this.nombre,
       precio: this.precio,
       talla: this.tallaSeleccionada,
-      cantidad: this.cantidadSeleccionada
+      cantidad: this.cantidadSeleccionada,
+      imagen: this.imagen
     };
 
     this.carrito.Agregar(productoCarrito);

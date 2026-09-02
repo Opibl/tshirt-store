@@ -40,6 +40,19 @@ export class ServicoService {
 
   }
 
+  // 🔹 Obtener historial de compras del usuario autenticado
+  obtenerCompras(token: string): Observable<any> {
+
+    return this.http
+      .get(`${this.servidor}/compras`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .pipe(
+        catchError(this.manejarError)
+      );
+
+  }
+
   // 🔹 Manejo centralizado de errores
   private manejarError(error: any) {
 

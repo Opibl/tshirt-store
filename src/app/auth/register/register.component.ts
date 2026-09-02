@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
@@ -22,7 +23,7 @@ export class RegisterComponent {
 
   constructor(
     private router: Router,
-    private auth: Auth
+    private authService: AuthService
   ) {}
 
   async registrar(): Promise<void> {
@@ -46,8 +47,7 @@ export class RegisterComponent {
 
     try {
 
-      const credenciales = await createUserWithEmailAndPassword(
-        this.auth,
+      const credenciales = await this.authService.registrar(
         this.email,
         this.password
       );

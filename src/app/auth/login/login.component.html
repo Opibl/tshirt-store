@@ -1,11 +1,10 @@
 <div class="body">
 
-    <!-- LOGIN -->
-    <div class="login-container">
-        <div class="login-card">
+    <div class="auth">
+        <div class="auth__card card">
 
-            <h2>Iniciar Sesión</h2>
-            <p>Accede a tu cuenta para ver tus compras y pedidos</p>
+            <h1 class="auth__titulo">Iniciar sesión</h1>
+            <p class="auth__subtitulo">Accede a tu cuenta para ver tus compras y pedidos</p>
 
             <form (ngSubmit)="login()">
 
@@ -15,6 +14,7 @@
                         type="email"
                         id="email"
                         name="email"
+                        class="input"
                         [(ngModel)]="email"
                         placeholder="correo@ejemplo.com"
                         required
@@ -27,6 +27,7 @@
                         type="password"
                         id="password"
                         name="password"
+                        class="input"
                         [(ngModel)]="password"
                         placeholder="********"
                         required
@@ -35,7 +36,7 @@
 
                 <button
                     type="submit"
-                    class="btn-login"
+                    class="btn btn--primary btn--block"
                     [disabled]="cargando">
 
                     <span *ngIf="cargando" class="spinner"></span>
@@ -45,26 +46,27 @@
 
             </form>
 
+            <div class="auth__separador"><span>o</span></div>
+
             <button
                 type="button"
-                class="btn-google"
+                class="btn btn--ghost btn--block"
                 (click)="loginConGoogle()"
                 [disabled]="cargando">
-
-                <span *ngIf="cargando" class="spinner"></span>
 
                 <img
                     *ngIf="!cargando"
                     src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                    alt="Google"
-                    class="google-logo"
+                    alt=""
+                    class="auth__google-logo"
                 >
+                <span *ngIf="cargando" class="spinner"></span>
 
-                {{ cargando ? 'Abriendo Google...' : 'Ingresar con Google' }}
+                {{ cargando ? 'Abriendo Google...' : 'Continuar con Google' }}
 
             </button>
 
-            <p class="register-link">
+            <p class="auth__link">
                 ¿No tienes cuenta?
                 <a routerLink="/register">Regístrate aquí</a>
             </p>

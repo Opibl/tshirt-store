@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-
-import { Auth, signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
 
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +21,7 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private auth: Auth
+    private authService: AuthService
   ) {}
 
   async login(): Promise<void> {
@@ -36,18 +35,12 @@ export class LoginComponent {
 
     try {
 
-      const credenciales = await signInWithEmailAndPassword(
-        this.auth,
+      const credenciales = await this.authService.login(
         this.email,
         this.password
       );
 
       console.log('Login exitoso:', credenciales.user);
-
-      localStorage.setItem(
-        'usuario',
-        credenciales.user.email || ''
-      );
 
       alert('Inicio de sesión exitoso');
 
@@ -86,19 +79,10 @@ export class LoginComponent {
     this.cargando = true;
 
     try {
-      const provider = new GoogleAuthProvider();
 
-      const resultado = await signInWithPopup(
-        this.auth,
-        provider
-      );
+      const resultado = await this.authService.loginConGoogle();
 
       console.log('✅ Google login:', resultado.user);
-
-      localStorage.setItem(
-        'usuario',
-        resultado.user.email || ''
-      );
 
       await this.router.navigate(['/']);
 

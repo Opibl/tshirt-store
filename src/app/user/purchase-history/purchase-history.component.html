@@ -1,51 +1,54 @@
-<div class="history-container">
+<div class="body">
+  <div class="contenedor contenedor--angosto">
 
-  <h1>🛍️ Historial de compras</h1>
+    <h1>Mis compras</h1>
 
-  <!-- Estado de carga -->
-  <div *ngIf="cargando" class="loading">
-    <p>Cargando compras...</p>
-  </div>
-
-  <!-- Sin compras -->
-  <div *ngIf="!cargando && compras.length === 0" class="empty-state">
-    <p>No tienes compras registradas.</p>
-  </div>
-
-  <!-- Lista de compras -->
-  <div *ngIf="!cargando && compras.length > 0">
-    <div *ngFor="let compra of compras" class="purchase-card">
-
-      <h3>Pedido #{{ compra.sessionId }}</h3>
-
-      <p>
-        <strong>Total:</strong>
-        ${{ compra.total | number }} CLP
-      </p>
-
-      <p>
-        <strong>Estado:</strong>
-        {{ compra.estado }}
-      </p>
-
-      <p *ngIf="compra.fecha">
-        <strong>Fecha:</strong>
-        {{ compra.fecha.seconds * 1000 | date:'dd/MM/yyyy HH:mm' }}
-      </p>
-
-      <hr>
-
-      <div class="productos">
-        <div *ngFor="let producto of compra.productos" class="producto-item">
-          <p>
-            {{ producto.nombre }}
-            - x{{ producto.cantidad }}
-            - ${{ producto.total | number }}
-          </p>
-        </div>
-      </div>
-
+    <!-- CARGANDO -->
+    <div *ngIf="cargando" class="estado-info">
+      <span class="spinner spinner--oscuro"></span>
+      <p>Cargando tus compras...</p>
     </div>
-  </div>
 
+    <!-- ERROR -->
+    <div *ngIf="!cargando && error" class="estado-info estado-info--error">
+      <i class="bi bi-exclamation-triangle"></i>
+      <p>No pudimos cargar tu historial. Intenta de nuevo más tarde.</p>
+    </div>
+
+    <!-- SIN COMPRAS -->
+    <div *ngIf="!cargando && !error && compras.length === 0" class="estado-info">
+      <i class="bi bi-bag"></i>
+      <p>Todavía no tienes compras registradas.</p>
+      <a routerLink="/" class="btn btn--ghost">Ir a la tienda</a>
+    </div>
+
+    <!-- LISTA -->
+    <div class="lista" *ngIf="!cargando && !error && compras.length > 0">
+      <div class="pedido card" *ngFor="let compra of compras">
+
+        <div class="pedido__cabecera">
+          <div>
+            <p class="pedido__id">Pedido #{{ compra.sessionId }}</p>
+            <p class="pedido__fecha" *ngIf="compra.fecha">{{ compra.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+
+          <span class="badge badge--success">{{ compra.estado }}</span>
+        </div>
+
+        <div class="pedido__productos">
+          <div class="pedido__producto" *ngFor="let producto of compra.productos">
+            <span>{{ producto.nombre }} <span class="pedido__cantidad">x{{ producto.cantidad }}</span></span>
+            <span>{{ producto.total | number }} CLP</span>
+          </div>
+        </div>
+
+        <div class="pedido__total">
+          <span>Total</span>
+          <span>{{ compra.total | number }} CLP</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 </div>

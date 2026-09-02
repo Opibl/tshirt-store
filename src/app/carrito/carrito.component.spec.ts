@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 
 import { CarritoComponent } from './carrito.component';
@@ -18,7 +19,8 @@ describe('CarritoComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CarritoComponent],
       providers: [
-        { provide: ServicoService, useValue: servicioMock }
+        { provide: ServicoService, useValue: servicioMock },
+        provideRouter([])
       ]
     }).compileComponents();
 

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { OrderTrackingComponent } from './order-tracking.component';
 
@@ -8,7 +9,8 @@ describe('OrderTrackingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OrderTrackingComponent]
+      imports: [OrderTrackingComponent],
+      providers: [provideRouter([])]
     })
     .compileComponents();
     
